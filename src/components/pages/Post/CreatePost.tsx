@@ -35,7 +35,7 @@ export default function CreatePost() {
         </div>
       </IonContent>
       <IonFooter>
-        <div className="shadow-top-md bottom-0 left-0 flex h-[80px] w-full items-center justify-between px-6">
+        <div className="shadow-top-md fixed bottom-0 left-0 flex h-[80px] w-full items-center justify-between px-6">
           <div className="text-xs font-medium">Tambahkan di postinganmu : </div>
           <div className="flex gap-4">
             <div className="btn-icon btn-icon-dark" onClick={() => setOpen(true)}>
