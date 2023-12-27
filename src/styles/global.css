@@ -26,6 +26,15 @@ body {
   overflow: hidden;
 }
 
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 .btn-icon {
   @apply relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-full hover:cursor-pointer;
 }

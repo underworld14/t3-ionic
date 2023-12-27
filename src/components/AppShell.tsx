@@ -10,6 +10,8 @@ import Login from './pages/Auth/Login';
 import Home from './pages/Home';
 import RumahAgpaii from './pages/RumahAgpaii';
 import CreatePost from './pages/Post/CreatePost';
+import MemberInformation from './pages/MemberInformation/MemberInformation';
+import OrganizationStructure from './pages/OrganizationStructure';
 
 import { api } from '~/utils/api';
 
@@ -33,6 +35,8 @@ const AppShell = () => {
           <Route path="/" component={Home} exact />
           <Route path="/rumah-agpaii" component={RumahAgpaii} exact />
           <Route path="/post/create" component={CreatePost} exact />
+          <Route path="/member-information" component={MemberInformation} exact />
+          <Route path="/organization-structure" component={OrganizationStructure} exact />
           <Route path="/auth/user-check" component={UserCheck} exact />
           <Route path="/auth/register" component={Register} exact />
           <Route path="/auth/login" component={Login} exact />

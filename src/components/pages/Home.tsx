@@ -27,12 +27,12 @@ export default function Home() {
                 <HomeMenu icon="kta-digital" to="/kta-digital" title="KTA Digital" />
               </IonCol>
               <IonCol size="3">
-                <HomeMenu icon="info-anggota" to="/info-anggota" title="Info Anggota" />
+                <HomeMenu icon="info-anggota" to="/member-information" title="Info Anggota" />
               </IonCol>
               <IonCol size="3">
                 <HomeMenu
                   icon="struktur-organisasi"
-                  to="/struktur-organisasi"
+                  to="/organization-structure"
                   title="Struktur Organisasi"
                 />
               </IonCol>
