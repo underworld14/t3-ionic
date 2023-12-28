@@ -21,7 +21,7 @@ export default function Home() {
           <IonGrid className="mt-4 w-full pb-4 shadow-md">
             <IonRow>
               <IonCol size="3">
-                <HomeMenu icon="rumah-agpaii" to="/rumah-agpaii" title="Rumah AGPAII" />
+                <HomeMenu icon="rumah-agpaii" to="/agpaii-home" title="Rumah AGPAII" />
               </IonCol>
               <IonCol size="3">
                 <HomeMenu icon="kta-digital" to="/kta-digital" title="KTA Digital" />

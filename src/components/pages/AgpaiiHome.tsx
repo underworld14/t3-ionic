@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { IonPage, IonContent, IonHeader, IonIcon } from '@ionic/react';
-import { notifications, chatbubbles, camera } from 'ionicons/icons';
+import { IonPage, IonContent, IonHeader, IonIcon, IonFab, IonFabButton } from '@ionic/react';
+import { notifications, chatbubbles, camera, add } from 'ionicons/icons';
 import { Link } from 'react-router-dom';
-import { Header, TabItem, TabPanel, Tabs } from '../molecules';
+import { Header, TabItem, TabPanel, Tabs, Post } from '../molecules';
 
 export default function RumahAgpaii() {
   const [tab, setTab] = useState(0);
@@ -37,7 +37,7 @@ export default function RumahAgpaii() {
               alt="avatar"
             />
             <Link
-              to="/post/create"
+              to="/agpaii-home/create-post"
               className="w-[90%] rounded-2xl border border-dashed border-[#898A8D] px-4 py-[10px] text-xs text-[#979797] outline-none hover:cursor-pointer"
             >
               Diskusi hari ini
@@ -49,29 +49,18 @@ export default function RumahAgpaii() {
 
           <TabPanel activeTab={tab} index={0}>
             {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="flex w-full flex-col rounded-xl py-4 shadow-md">
-                <div className="flex px-3">
-                  <img
-                    className="h-10 w-10 rounded-full"
-                    src={`https://i.pravatar.cc/150?img=${i + 1}`}
-                    alt="avatar"
-                  />
-                  <div className="ml-2 flex flex-col">
-                    <h1 className="text-sm font-semibold">Abdul Jamil , S.Pd.</h1>
-                    <p className="text-xs">Guru PAI SMP Gunungpati Semarang</p>
-                  </div>
-                </div>
-                <div className="mt-3">
-                  <img
-                    className="w-full object-cover"
-                    src={`https://picsum.photos/seed/${i + 1}/500/300`}
-                    alt="post"
-                  />
-                </div>
-              </div>
+              <Post key={i} />
             ))}
           </TabPanel>
         </div>
+
+        <IonFab slot="fixed" vertical="bottom" horizontal="end">
+          <Link to="/agpaii-home/create-post">
+            <IonFabButton>
+              <IonIcon icon={add} className="text-white"></IonIcon>
+            </IonFabButton>
+          </Link>
+        </IonFab>
       </IonContent>
     </IonPage>
   );

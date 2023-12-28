@@ -8,8 +8,8 @@ import UserCheck from './pages/Auth/UserCheck';
 import Register from './pages/Auth/Register';
 import Login from './pages/Auth/Login';
 import Home from './pages/Home';
-import RumahAgpaii from './pages/RumahAgpaii';
-import CreatePost from './pages/Post/CreatePost';
+import AgpaiiHome from './pages/AgpaiiHome';
+import CreatePost from './pages/CreatePost';
 import MemberInformation from './pages/MemberInformation/MemberInformation';
 import OrganizationStructure from './pages/OrganizationStructure';
 
@@ -33,8 +33,8 @@ const AppShell = () => {
           {/* <Route path="/tabs" render={() => <Tabs />} />
           <Route path="/" render={() => <Redirect to="/tabs/feed" />} exact /> */}
           <Route path="/" component={Home} exact />
-          <Route path="/rumah-agpaii" component={RumahAgpaii} exact />
-          <Route path="/post/create" component={CreatePost} exact />
+          <Route path="/agpaii-home" component={AgpaiiHome} exact />
+          <Route path="/agpaii-home/create-post" component={CreatePost} exact />
           <Route path="/member-information" component={MemberInformation} exact />
           <Route path="/organization-structure" component={OrganizationStructure} exact />
           <Route path="/auth/user-check" component={UserCheck} exact />

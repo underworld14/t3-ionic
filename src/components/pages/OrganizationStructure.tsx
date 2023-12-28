@@ -12,7 +12,7 @@ export default function OrganizationStructure() {
         <Header title="Struktur Organisasi" />
       </IonHeader>
       <IonContent>
-        <div className="mt-[72px]">
+        <div className="mt-[72px] pb-6">
           <Tabs onChange={setTab}>
             <TabItem>Struktur Organisasi</TabItem>
             <TabItem>Sejarah</TabItem>
