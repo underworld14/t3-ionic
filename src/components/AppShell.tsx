@@ -12,6 +12,8 @@ import AgpaiiHome from './pages/AgpaiiHome';
 import CreatePost from './pages/CreatePost';
 import MemberInformation from './pages/MemberInformation/MemberInformation';
 import OrganizationStructure from './pages/OrganizationStructure';
+import Notification from './pages/Notification';
+import StoriesPage from './pages/Stories';
 
 import { api } from '~/utils/api';
 
@@ -34,7 +36,9 @@ const AppShell = () => {
           <Route path="/" render={() => <Redirect to="/tabs/feed" />} exact /> */}
           <Route path="/" component={Home} exact />
           <Route path="/agpaii-home" component={AgpaiiHome} exact />
+          <Route path="/agpaii-home/notification" component={Notification} exact />
           <Route path="/agpaii-home/create-post" component={CreatePost} exact />
+          <Route path="/agpaii-home/stories/:id" component={StoriesPage} exact />
           <Route path="/member-information" component={MemberInformation} exact />
           <Route path="/organization-structure" component={OrganizationStructure} exact />
           <Route path="/auth/user-check" component={UserCheck} exact />
