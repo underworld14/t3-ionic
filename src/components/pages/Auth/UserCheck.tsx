@@ -1,14 +1,78 @@
-import { IonPage, IonContent, IonRippleEffect } from '@ionic/react';
-import ReactPaginate from 'react-paginate';
+import { useState } from 'react';
+import { IonPage, IonContent } from '@ionic/react';
 import { Link } from 'react-router-dom';
 import { Button } from '~/components/atoms';
+import { api } from '~/utils/api';
+import { UserSearchList, Pagination } from '~/components/molecules';
 
 export default function UserCheck() {
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(0);
+  const [type, setType] = useState<'email' | 'name'>('name');
+  const { data, mutate, isLoading } = api.user.search.useMutation();
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    setPage(0);
+    e.preventDefault();
+    mutate({ [type]: search, page: page + 1 });
+  };
+
+  const handlePageChange = (selectedPage: number) => {
+    setPage(selectedPage);
+    mutate({ [type]: search, page: selectedPage + 1 });
+  };
+
+  const renderSearchResult = () => {
+    if (!data?.data.length) {
+      return (
+        <div className="flex h-full flex-col items-center justify-center">
+          <img
+            alt="avatar"
+            src="https://ionicframework.com/docs/img/demos/avatar.svg"
+            width={200}
+            height={200}
+            className="size-[200px] rounded-full"
+          />
+          {isLoading ? (
+            <div className="mt-6 text-3xl font-bold text-[#898A8D]">Memuat...</div>
+          ) : (
+            <>
+              <h3 className="mt-6 text-3xl font-bold text-[#898A8D]">Belum ada data</h3>
+              <p className="mt-1 text-[#898A8D]">Cari pengguna terlebih dahulu</p>
+            </>
+          )}
+        </div>
+      );
+    } else if (Array.isArray(data.data) && data.data.length) {
+      return (
+        <>
+          <h2 className="text-3xl font-bold text-primary">Hasil Pencarian</h2>
+          <p className="text-[#898A8D]">{data.metadata.totalItems} Pengguna ditemukan</p>
+
+          <div className="mt-6 flex h-full flex-col">
+            {data.data.map((user, i) => (
+              <UserSearchList key={i} name={user.name} email={user.email} avatar={user.avatar} />
+            ))}
+          </div>
+
+          <Pagination
+            page={page}
+            pageCount={data.metadata.totalPages}
+            onPageChange={handlePageChange}
+          />
+        </>
+      );
+    }
+  };
+
   return (
     <IonPage>
       <IonContent fullscreen>
         <div className="grid grid-cols-2">
-          <div className="relative flex min-h-screen flex-col items-center justify-center bg-primary text-center">
+          <form
+            className="relative flex min-h-screen flex-col items-center justify-center bg-primary text-center"
+            onSubmit={handleSubmit}
+          >
             <div className="w-[80%]">
               <div className="flex justify-center">
                 <img width={80} alt="agpaii-logo" src="/assets/logo/agpaii-white.svg" />
@@ -22,10 +86,12 @@ export default function UserCheck() {
               <div className="mt-16">
                 <div className="flex w-full rounded-lg bg-white">
                   <div className="rounded-lg bg-[#D9D9D9]">
-                    <select className="rounded-lg bg-[#D9D9D9] px-5 py-3 outline-none">
-                      <option value="email">Email</option>
+                    <select
+                      className="rounded-lg bg-[#D9D9D9] px-5 py-3 outline-none"
+                      onChange={e => setType(e.target.value as any)}
+                    >
                       <option value="name">Nama</option>
-                      <option value="hp">No HP</option>
+                      <option value="email">Email</option>
                     </select>
                   </div>
                   <input
@@ -33,12 +99,20 @@ export default function UserCheck() {
                     name="identifier"
                     className="w-full rounded-lg px-5 py-3 outline-none"
                     placeholder="Masukkan alamat email"
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
                   />
                 </div>
               </div>
 
-              <Button type="button" size="xl" color="secondary" className="mt-6 w-full">
-                Login
+              <Button
+                loading={isLoading}
+                type="submit"
+                size="xl"
+                color="secondary"
+                className="mt-6 w-full"
+              >
+                Cari Pengguna
               </Button>
 
               <div className="mt-8">
@@ -59,39 +133,9 @@ export default function UserCheck() {
               src="/assets/illustration/mosque.svg"
               className="absolute bottom-0 left-0 w-full"
             />
-          </div>
+          </form>
           <div className="flex min-h-screen flex-col bg-white px-12 py-8">
-            <h2 className="text-3xl font-bold text-primary">Hasil Pencarian</h2>
-            <p className="text-[#898A8D]">20 Pengguna ditemukan</p>
-
-            <div className="mt-6 flex flex-col">
-              {Array.from(Array(10).keys()).map((_, i) => (
-                <div key={i} className="flex items-center border-b border-[#E0E0E0] py-3">
-                  <img
-                    className="h-12 w-12 rounded-full"
-                    src={`https://i.pravatar.cc/150?img=${i}`}
-                    alt="avatar"
-                  />
-                  <div className="ml-5 flex flex-col">
-                    <h3 className="text-lg font-semibold">Abdul Jamil, S.Pd.I</h3>
-                    <p className="text-sm text-[#898A8D]">abduljamil@gmail.com</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <ReactPaginate
-              className="mt-8 flex w-full items-center justify-center gap-2"
-              pageClassName="w-9 h-9 flex justify-center items-center hover:bg-[#F2F2F2] hover:cursor-pointer rounded-full"
-              activeClassName="bg-primary text-white"
-              breakLabel="..."
-              nextLabel=">"
-              onPageChange={() => console.log('page changed')}
-              pageRangeDisplayed={5}
-              pageCount={10}
-              previousLabel="<"
-              renderOnZeroPageCount={null}
-            />
+            {renderSearchResult()}
           </div>
         </div>
       </IonContent>

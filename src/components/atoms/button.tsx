@@ -14,6 +14,9 @@ export const button = tv({
       md: 'py-2 px-4 text-base',
       xl: 'py-3 px-6 text-lg',
     },
+    state: {
+      disabled: 'opacity-80 cursor-not-allowed',
+    },
     shape: {
       rounded: 'rounded-2xl',
     },
@@ -29,11 +32,22 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'md' | 'xl' | 'sm';
   shape?: 'rounded';
   children: React.ReactNode;
+  loading?: boolean;
 }
 
-export function Button({ children, color, size, shape, className, ...props }: ButtonProps) {
+export function Button({
+  children,
+  color,
+  size,
+  shape,
+  className,
+  loading,
+  ...props
+}: ButtonProps) {
+  const state = props.disabled ? 'disabled' : undefined;
+
   return (
-    <button {...props} className={button({ color, size, shape, className })}>
+    <button {...props} className={button({ color, size, shape, className, state })}>
       <IonRippleEffect></IonRippleEffect>
       {children}
     </button>
