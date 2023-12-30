@@ -35,8 +35,8 @@ model bank_accounts {
   name              String
   account_number    String
   bank_name         String?
-  created_at        DateTime? @db.Timestamp(0)
-  updated_at        DateTime? @db.Timestamp(0)
+  created_at        DateTime? @default(now())
+  updated_at        DateTime? @updatedAt
   bank_account_type String?
   bank_account_id   BigInt?   @db.UnsignedBigInt
 
@@ -48,8 +48,8 @@ model cities {
   province_id BigInt      @db.UnsignedBigInt
   name        String
   description String?
-  created_at  DateTime?   @db.Timestamp(0)
-  updated_at  DateTime?   @db.Timestamp(0)
+  created_at  DateTime?   @default(now())
+  updated_at  DateTime?   @updatedAt
   provinces   provinces   @relation(fields: [province_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "cities_province_id_foreign")
   districts   districts[]
   profiles    profiles[]
@@ -57,101 +57,25 @@ model cities {
   @@index([province_id], map: "cities_province_id_foreign")
 }
 
-model department_divisions {
-  id                BigInt        @id @default(autoincrement()) @db.UnsignedBigInt
-  title             String
-  description       String?       @db.Text
-  start_date        DateTime      @db.Date
-  end_date          DateTime      @db.Date
-  divisionable_type String?
-  divisionable_id   BigInt?       @db.UnsignedBigInt
-  created_at        DateTime?     @db.Timestamp(0)
-  updated_at        DateTime?     @db.Timestamp(0)
-  departments       departments[]
-
-  @@index([divisionable_type, divisionable_id], map: "department_divisions_divisionable_type_divisionable_id_index")
-}
-
-model department_users {
-  id            BigInt      @id @default(autoincrement()) @db.UnsignedBigInt
-  user_id       BigInt      @db.UnsignedBigInt
-  department_id BigInt      @db.UnsignedBigInt
-  created_at    DateTime?   @db.Timestamp(0)
-  updated_at    DateTime?   @db.Timestamp(0)
-  departments   departments @relation(fields: [department_id], references: [id], onUpdate: Restrict, map: "department_users_department_id_foreign")
-  users         users       @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "department_users_user_id_foreign")
-
-  @@index([department_id], map: "department_users_department_id_foreign")
-  @@index([user_id], map: "department_users_user_id_foreign")
-}
-
-model departments {
-  id                   BigInt                @id @default(autoincrement()) @db.UnsignedBigInt
-  title                String
-  key                  String?
-  start_date           DateTime?             @db.Date
-  end_date             DateTime?             @db.Date
-  user_id              BigInt?               @db.UnsignedBigInt
-  order                Int                   @default(0)
-  departmentable_type  String?
-  departmentable_id    BigInt?               @db.UnsignedBigInt
-  created_at           DateTime?             @db.Timestamp(0)
-  updated_at           DateTime?             @db.Timestamp(0)
-  parent_id            BigInt?               @db.UnsignedBigInt
-  division_id          BigInt?               @db.UnsignedBigInt
-  department_users     department_users[]
-  department_divisions department_divisions? @relation(fields: [division_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "departments_division_id_foreign")
-  departments          departments?          @relation("departmentsTodepartments", fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "departments_parent_id_foreign")
-  other_departments    departments[]         @relation("departmentsTodepartments")
-  users                users?                @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "departments_user_id_foreign")
-
-  @@index([departmentable_type, departmentable_id], map: "departments_departmentable_type_departmentable_id_index")
-  @@index([division_id], map: "departments_division_id_foreign")
-  @@index([parent_id], map: "departments_parent_id_foreign")
-  @@index([user_id], map: "departments_user_id_foreign")
-}
-
 model districts {
   id          BigInt     @id @default(autoincrement()) @db.UnsignedBigInt
   city_id     BigInt     @db.UnsignedBigInt
   name        String
   description String?
-  created_at  DateTime?  @db.Timestamp(0)
-  updated_at  DateTime?  @db.Timestamp(0)
+  created_at  DateTime?  @default(now())
+  updated_at  DateTime?  @updatedAt
   cities      cities     @relation(fields: [city_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "districts_city_id_foreign")
   profiles    profiles[]
 
   @@index([city_id], map: "districts_city_id_foreign")
 }
 
-model events {
-  id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
-  user_id     BigInt    @db.UnsignedBigInt
-  name        String
-  image       String?
-  description String?   @db.Text
-  start_at    DateTime  @db.DateTime(0)
-  end_at      DateTime? @db.DateTime(0)
-  address     String?
-  created_at  DateTime? @db.Timestamp(0)
-  updated_at  DateTime? @db.Timestamp(0)
-  price       BigInt?
-  type        String?
-  link        String?
-  deleted_at  DateTime? @db.Timestamp(0)
-  category_id BigInt?   @db.UnsignedBigInt
-  users       users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "events_user_id_foreign")
-
-  @@index([category_id], map: "events_category_id_foreign")
-  @@index([user_id], map: "events_user_id_foreign")
-}
-
 model follows {
   id                             BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
   parent_id                      BigInt    @db.UnsignedBigInt
   child_id                       BigInt    @db.UnsignedBigInt
-  created_at                     DateTime? @db.Timestamp(0)
-  updated_at                     DateTime? @db.Timestamp(0)
+  created_at                     DateTime? @default(now())
+  updated_at                     DateTime? @updatedAt
   follow_type                    String?
   follow_id                      BigInt?   @db.UnsignedBigInt
   users_follows_child_idTousers  users     @relation("follows_child_idTousers", fields: [child_id], references: [id], onDelete: Cascade, map: "follows_child_id_foreign")
@@ -166,8 +90,8 @@ model murottals {
   id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
   name        String
   description String?   @db.Text
-  created_at  DateTime? @db.Timestamp(0)
-  updated_at  DateTime? @db.Timestamp(0)
+  created_at  DateTime? @default(now())
+  updated_at  DateTime? @updatedAt
 }
 
 model payment_vendors {
@@ -177,8 +101,8 @@ model payment_vendors {
   description    String?
   account_number String
   account_name   String
-  created_at     DateTime? @db.Timestamp(0)
-  updated_at     DateTime? @db.Timestamp(0)
+  created_at     DateTime? @default(now())
+  updated_at     DateTime? @updatedAt
 }
 
 model posts {
@@ -195,8 +119,8 @@ model posts {
   meta_keywords    String?      @db.Text
   status           posts_status @default(DRAFT)
   featured         Boolean      @default(false)
-  created_at       DateTime?    @db.Timestamp(0)
-  updated_at       DateTime?    @db.Timestamp(0)
+  created_at       DateTime?    @default(now())
+  updated_at       DateTime?    @updatedAt
   is_public        Boolean      @default(false)
   deleted_at       DateTime?    @db.Timestamp(0)
   key              String?
@@ -251,31 +175,35 @@ model provinces {
 }
 
 model users {
-  id                               BigInt             @id @default(autoincrement()) @db.UnsignedBigInt
-  kta_id                           BigInt?            @unique(map: "UNIQUE")
-  role_id                          BigInt?            @db.UnsignedBigInt
+  id                               BigInt     @id @default(autoincrement()) @db.UnsignedBigInt
+  role_id                          BigInt?    @db.UnsignedBigInt
+  kta_id                           BigInt?    @unique(map: "UNIQUE")
   name                             String
-  email                            String             @unique(map: "users_email_unique")
-  avatar                           String?           
-  email_verified_at                DateTime?          @db.Timestamp(0)
+  email                            String     @unique(map: "users_email_unique")
+  email_verified_at                DateTime?  @db.Timestamp(0)
   password                         String
-  user_activated_at                DateTime?          @db.Timestamp(0)
-  point                            BigInt             @default(0)
-  remember_token                   String?            @db.VarChar(100)
-  settings                         String?            @db.Text
-  created_at                       DateTime           @default(now())
-  updated_at                       DateTime           @updatedAt
-  expired_at                       DateTime?          @db.DateTime(0)
-  deleted_at                       DateTime?          @db.Timestamp(0)
+  point                            BigInt     @default(0)
+  created_at                       DateTime   @default(now())
+  updated_at                       DateTime   @updatedAt @default(now())
+  expired_at                       DateTime?  @db.DateTime(0)
+  deleted_at                       DateTime?  @db.Timestamp(0)
+  position_id                      Int?
   articles                         articles[]
-  department_users                 department_users[]
-  departments                      departments[]
-  events                           events[]
-  follows_follows_child_idTousers  follows[]          @relation("follows_child_idTousers")
-  follows_follows_parent_idTousers follows[]          @relation("follows_parent_idTousers")
+  follows_follows_child_idTousers  follows[]  @relation("follows_child_idTousers")
+  follows_follows_parent_idTousers follows[]  @relation("follows_parent_idTousers")
   profiles                         profiles[]
+  position                         positions? @relation(fields: [position_id], references: [id], map: "users_position_id_foreign")
 
   @@index([role_id], map: "users_role_id_foreign")
+}
+
+model positions {
+  id          Int    @id @default(autoincrement())
+  name        String
+  description String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt @default(now())
+  users       users[]
 }
 
 enum posts_status {

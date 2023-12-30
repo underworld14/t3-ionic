@@ -46,3 +46,11 @@ body {
 .btn-icon-dark {
   @apply hover:bg-primary/30;
 }
+
+.form-group {
+  @apply flex w-full flex-col;
+}
+
+.form-group .error {
+  @apply mt-1 text-xs text-red-500;
+}

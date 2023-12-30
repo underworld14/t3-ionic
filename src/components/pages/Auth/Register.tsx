@@ -1,8 +1,43 @@
-import { IonPage, IonContent } from '@ionic/react';
-import { Link } from 'react-router-dom';
+import { IonPage, IonContent, useIonToast } from '@ionic/react';
+import { Link, useHistory } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+
 import { Button } from '~/components/atoms';
+import { api } from '~/utils/api';
+import { RegisterSchema, registerSchemaResolver } from '~/schemas/register-schema';
 
 export default function Register() {
+  const history = useHistory();
+  const { data } = api.position.index.useQuery();
+  const mutation = api.auth.register.useMutation();
+  const [toast] = useIonToast();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<RegisterSchema>({
+    resolver: registerSchemaResolver,
+  });
+
+  const onSubmit = async (payload: RegisterSchema) => {
+    try {
+      const res = await mutation.mutateAsync(payload);
+      reset();
+      toast({
+        message: res.message,
+        duration: 3000,
+      });
+      history.push('/auth/login');
+    } catch (error: any) {
+      toast({
+        message: error.message,
+        duration: 3000,
+      });
+    }
+  };
+
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -14,35 +49,67 @@ export default function Register() {
 
             <h1 className="mt-6 text-center text-4xl font-bold text-primary">Daftar</h1>
 
-            <form className="mt-8 flex flex-col gap-5">
-              <input
-                className="rounded-lg bg-[#ECEAEB] px-5 py-3 outline-none"
-                placeholder="Nama Lengkap"
-              />
-              <input
-                type="email"
-                className="rounded-lg bg-[#ECEAEB] px-5 py-3 outline-none"
-                placeholder="Email"
-              />
-              <input
-                type="password"
-                className="rounded-lg bg-[#ECEAEB] px-5 py-3 outline-none"
-                placeholder="Password"
-              />
-              <input
-                type="confirm_password"
-                className="rounded-lg bg-[#ECEAEB] px-5 py-3 outline-none"
-                placeholder="Ulangi password"
-              />
-              <select className="rounded-lg bg-[#ECEAEB] px-5 py-3 outline-none">
-                <option disabled>Daftar Sebagai</option>
-                <option value="user">Guru PAI</option>
-                <option value="kepsek">Kepala Sekolah & Guru PAI</option>
-                <option value="ppai">Pengawas PAI</option>
-                <option value="ppai">Pembina</option>
-              </select>
+            <form className="mt-8 flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
+              <div className="form-group">
+                <input
+                  {...register('name')}
+                  className="rounded-lg bg-[#ECEAEB] px-5 py-3 outline-none"
+                  placeholder="Nama Lengkap"
+                />
+                {errors.name && <span className="error">{errors.name.message}</span>}
+              </div>
 
-              <Button type="button" size="xl" color="primary">
+              <div className="form-group">
+                <input
+                  {...register('email')}
+                  type="email"
+                  className="rounded-lg bg-[#ECEAEB] px-5 py-3 outline-none"
+                  placeholder="Email"
+                />
+                {errors.email && <span className="error">{errors.email.message}</span>}
+              </div>
+
+              <div className="form-group">
+                <input
+                  {...register('password')}
+                  type="password"
+                  className="rounded-lg bg-[#ECEAEB] px-5 py-3 outline-none"
+                  placeholder="Password"
+                />
+                {errors.password && <span className="error">{errors.password.message}</span>}
+              </div>
+
+              <div className="form-group">
+                <input
+                  {...register('password_confirmation')}
+                  type="password"
+                  className="rounded-lg bg-[#ECEAEB] px-5 py-3 outline-none"
+                  placeholder="Ulangi password"
+                />
+                {errors.password_confirmation && (
+                  <span className="error">{errors.password_confirmation.message}</span>
+                )}
+              </div>
+
+              <div className="form-group">
+                <select
+                  {...register('position_id')}
+                  defaultValue=""
+                  className="rounded-lg bg-[#ECEAEB] px-5 py-3 outline-none"
+                >
+                  <option value="" disabled hidden>
+                    Daftar Sebagai
+                  </option>
+                  {data?.map(position => (
+                    <option key={position.id} value={position.id}>
+                      {position.name}
+                    </option>
+                  ))}
+                </select>
+                {errors.position_id && <span className="error">{errors.position_id.message}</span>}
+              </div>
+
+              <Button type="submit" size="xl" color="primary">
                 Login
               </Button>
 
