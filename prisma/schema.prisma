@@ -12,7 +12,7 @@ model articles {
   title            String
   body             String    @db.Text
   key              String?
-  author_id        BigInt    @db.UnsignedBigInt
+  author_id        Int
   slug             String?   @unique(map: "articles_slug_unique")
   seo_title        String?
   meta_description String?
@@ -72,8 +72,8 @@ model districts {
 
 model follows {
   id                             BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
-  parent_id                      BigInt    @db.UnsignedBigInt
-  child_id                       BigInt    @db.UnsignedBigInt
+  parent_id                      Int
+  child_id                       Int
   created_at                     DateTime? @default(now())
   updated_at                     DateTime? @updatedAt
   follow_type                    String?
@@ -128,7 +128,7 @@ model posts {
 
 model profiles {
   id                            BigInt                  @id @default(autoincrement()) @db.UnsignedBigInt
-  user_id                       BigInt                  @db.UnsignedBigInt
+  user_id                       Int
   nip                           String?                 @db.VarChar(255)
   nik                           String?                 @db.VarChar(255)
   contact                       String?                 @db.VarChar(255)
@@ -175,16 +175,15 @@ model provinces {
 }
 
 model users {
-  id                               BigInt     @id @default(autoincrement()) @db.UnsignedBigInt
-  role_id                          BigInt?    @db.UnsignedBigInt
-  kta_id                           BigInt?    @unique(map: "UNIQUE")
+  id                               Int        @id @default(autoincrement())
+  kta_id                           String?    @unique(map: "UNIQUE")
   name                             String
   email                            String     @unique(map: "users_email_unique")
   email_verified_at                DateTime?  @db.Timestamp(0)
   password                         String
-  point                            BigInt     @default(0)
+  point                            Int        @default(0)
   created_at                       DateTime   @default(now())
-  updated_at                       DateTime   @updatedAt @default(now())
+  updated_at                       DateTime   @default(now()) @updatedAt
   expired_at                       DateTime?  @db.DateTime(0)
   deleted_at                       DateTime?  @db.Timestamp(0)
   position_id                      Int?
@@ -193,16 +192,14 @@ model users {
   follows_follows_parent_idTousers follows[]  @relation("follows_parent_idTousers")
   profiles                         profiles[]
   position                         positions? @relation(fields: [position_id], references: [id], map: "users_position_id_foreign")
-
-  @@index([role_id], map: "users_role_id_foreign")
 }
 
 model positions {
-  id          Int    @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
   description String?
   created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt @default(now())
+  updated_at  DateTime @default(now()) @updatedAt
   users       users[]
 }
 

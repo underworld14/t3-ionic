@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 export const registerSchema = z
   .object({
-    email: z.string().email('Email tidak valid'),
+    email: z.string().email('Email tidak valid').min(1, 'Email wajib diisi'),
     name: z.string().min(1, 'Nama wajib diisi'),
     password: z.string().min(6, 'Password minimal 6 karakter'),
     password_confirmation: z.string().min(6, 'Password minimal 6 karakter'),

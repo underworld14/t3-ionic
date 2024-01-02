@@ -1,11 +1,11 @@
-import { z } from 'zod';
-import { sign, verify } from 'jsonwebtoken';
 import { hash, compare } from 'bcrypt';
+import { omit } from 'lodash-es';
 
-import { env } from '~/env';
-import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
+import { createTRPCRouter, publicProcedure, authorizedProcedure } from '~/server/api/trpc';
 import { TRPCError } from '@trpc/server';
 import { registerSchema } from '~/schemas/register-schema';
+import { loginSchema } from '~/schemas/login-schema';
+import { encodeJwtToken } from '~/server/utils/security';
 
 export const authRouter = createTRPCRouter({
   register: publicProcedure.input(registerSchema).mutation(async ({ ctx, input }) => {
@@ -36,43 +36,54 @@ export const authRouter = createTRPCRouter({
       message: 'Berhasil mendaftar, silahkan login',
     };
   }),
-  login: publicProcedure
-    .input(
-      z.object({
-        email: z.string().email(),
-        password: z.string(),
-      }),
-    )
-    .mutation(async ({ ctx, input }) => {
-      const user = await ctx.db.users.findUnique({
-        where: {
-          email: input.email,
-        },
+  login: publicProcedure.input(loginSchema).mutation(async ({ ctx, input }) => {
+    const user = await ctx.db.users.findFirst({
+      where: {
+        email: input.email,
+      },
+    });
+
+    if (!user) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Invalid email or password',
       });
+    }
 
-      if (!user) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Invalid email or password',
-        });
-      }
+    const valid = await compare(input.password, user.password);
 
-      const valid = await compare(input.password, user.password);
-
-      if (!valid) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Invalid email or password',
-        });
-      }
-
-      const token = sign({ userId: user.id }, env.SECRET_KEY, {
-        expiresIn: '7d',
+    if (!valid) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Invalid email or password',
       });
+    }
 
-      return {
-        data: user,
-        token,
-      };
-    }),
+    const token = await encodeJwtToken({
+      userId: user.id,
+    });
+
+    return {
+      data: omit(user, 'password'),
+      token,
+    };
+  }),
+  check: authorizedProcedure.query(async ({ ctx }) => {
+    const user = await ctx.db.users.findFirst({
+      where: {
+        id: ctx.user.id,
+      },
+    });
+
+    if (!user) {
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: 'Invalid token',
+      });
+    }
+
+    return {
+      data: omit(user, 'password'),
+    };
+  }),
 });
