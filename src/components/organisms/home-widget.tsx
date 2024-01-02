@@ -1,4 +1,9 @@
+import dayjs from 'dayjs';
+import { useAuthStore } from '~/store/auth-store';
+
 export function HomeWidget() {
+  const { user } = useAuthStore();
+
   return (
     <div className="fixed left-0 top-0 z-20 w-full">
       <div className="bg-primary-gradient h-[200px] w-full px-6 py-8">
@@ -12,13 +17,15 @@ export function HomeWidget() {
             <img alt="agpaii" className="-mt-7" src="/assets/logo/agpaii-logo-only.svg" />
             <div className="ml-4 flex flex-col gap-1">
               <h1 className="font-semibold text-white">Rumah AGPAII</h1>
-              <p className="text-xs font-medium text-white">Assalamualaikum Ardata Media</p>
-              <p className="text-xs font-medium text-white">08 Februari 2023</p>
+              <p className="text-xs font-medium text-white">Assalamualaikum {user?.name}</p>
+              <p className="text-xs font-medium text-white">
+                {dayjs().format('dddd, DD MMMM YYYY')}
+              </p>
             </div>
           </div>
           <img
             className="h-12 w-12 rounded-full"
-            src={`https://i.pravatar.cc/150?img=${1}`}
+            src={`https://i.pravatar.cc/150?img=${2}`}
             alt="avatar"
           />
         </div>

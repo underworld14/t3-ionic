@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+import 'dayjs/locale/id';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { StatusBar, Style } from '@capacitor/status-bar';
 
@@ -20,6 +22,8 @@ import Notification from './pages/Notification';
 import StoriesPage from './pages/Stories';
 
 setupIonicReact({});
+
+dayjs.locale('id');
 
 window.matchMedia('(prefers-color-scheme: dark)').addListener(async status => {
   try {
