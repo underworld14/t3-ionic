@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
-import { getPagination } from '~/utils/helpers';
+import { buildPaginationMetadata, getPagination } from '~/utils/helpers';
 
 export const userRouter = createTRPCRouter({
   search: publicProcedure
@@ -43,15 +43,9 @@ export const userRouter = createTRPCRouter({
         }),
       ]);
 
-      const totalPages = Math.ceil(totalUsers / take);
-
       return {
         data: users,
-        metadata: {
-          totalItems: totalUsers,
-          currentPage: page,
-          totalPages,
-        },
+        metadata: buildPaginationMetadata(totalUsers, page, take),
       };
     }),
 });

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { IonPage, IonContent, IonGrid, IonCol, IonRow, IonHeader, IonToolbar } from '@ionic/react';
+import { IonPage, IonContent, IonGrid, IonCol, IonRow, IonHeader } from '@ionic/react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import { Link } from 'react-router-dom';
@@ -9,8 +9,12 @@ import { HomeMenu } from '../atoms/home-menu';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { HomeWidget } from '../organisms';
+import { api } from '~/utils/api';
+import ArticleCard from '../molecules/article-card';
 
 export default function Home() {
+  const { data: article } = api.article.index.useQuery();
+
   return (
     <IonPage>
       <IonHeader>
@@ -84,52 +88,44 @@ export default function Home() {
             <h5 className="font-medium">Artikel Terbaru</h5>
 
             <div className="mt-4 pb-4">
-              <div className="flex">
-                <img
-                  alt="artikel"
-                  className="h-[156px] w-[60%] rounded-xl object-cover"
-                  height={156}
-                  src={`https://source.unsplash.com/random/1200x156?sig=${Math.random().toFixed(
-                    2,
-                  )}`}
+              {article?.data?.[0] && (
+                <ArticleCard
+                  title={article?.data?.[0]?.title}
+                  to={`/article/${encodeURIComponent(article?.data?.[0].slug || '')}`}
                 />
-                <div className="ml-4 flex flex-col">
-                  <h4 className="font-semibold">DPP AGPAII MENGADAKAN MAULID NABI MUHAMMAD SAW</h4>
-                  <Link to="/artikel/1" className="mt-2 text-xs text-primary hover:underline">
-                    Baca Selengkapnya
-                  </Link>
-                </div>
-              </div>
+              )}
 
               <div className="mt-4">
                 <IonGrid>
                   <IonRow>
-                    {Array.from({ length: 2 }).map((_, i) => (
+                    {article?.data?.slice(1, 3)?.map((article, i) => (
                       <IonCol size="6" key={i}>
-                        <div className="flex w-full flex-col">
-                          <img
-                            alt="artikel"
-                            className="h-[100px] w-full rounded-xl object-cover"
-                            height={100}
-                            src={`https://source.unsplash.com/random/1200x156?sig=${Math.random().toFixed(
-                              2,
-                            )}`}
-                          />
-                          <h4 className="mt-4 font-semibold">
-                            DPP AGPAII MENGADAKAN MAULID NABI MUHAMMAD SAW
-                          </h4>
-                          <Link
-                            to="/artikel/1"
-                            className="mt-2 text-xs text-primary hover:underline"
-                          >
-                            Baca Selengkapnya
-                          </Link>
-                        </div>
+                        <ArticleCard
+                          fullWidth
+                          variant="vertical"
+                          title={article.title}
+                          to={`/article/${encodeURIComponent(article.slug || '')}`}
+                        />
                       </IonCol>
                     ))}
                   </IonRow>
                 </IonGrid>
               </div>
+            </div>
+
+            <div className="mt-4">
+              <Swiper spaceBetween={50} slidesPerView={1} modules={[Pagination]}>
+                {article?.data?.slice(3, 11)?.map((article, i) => (
+                  <SwiperSlide key={i}>
+                    <ArticleCard
+                      fullWidth
+                      variant="vertical"
+                      title={article.title}
+                      to={`/article/${encodeURIComponent(article.slug || '')}`}
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
             </div>
           </div>
         </div>

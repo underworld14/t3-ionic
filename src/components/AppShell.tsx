@@ -20,6 +20,7 @@ import MemberInformation from './pages/MemberInformation/MemberInformation';
 import OrganizationStructure from './pages/OrganizationStructure';
 import Notification from './pages/Notification';
 import StoriesPage from './pages/Stories';
+import Article from './pages/Article';
 
 setupIonicReact({});
 
@@ -45,6 +46,7 @@ const AppShell = () => {
           <PrivateRoute path="/agpaii-home/stories/:id" component={StoriesPage} exact />
           <PrivateRoute path="/member-information" component={MemberInformation} exact />
           <PrivateRoute path="/organization-structure" component={OrganizationStructure} exact />
+          <PrivateRoute path="/article/:slug" component={Article} exact />
 
           <AuthRoute path="/auth/user-check" component={UserCheck} exact />
           <AuthRoute path="/auth/register" component={Register} exact />
