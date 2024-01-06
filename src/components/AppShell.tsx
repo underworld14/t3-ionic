@@ -9,6 +9,7 @@ import { Route } from 'react-router-dom';
 
 import { useQueryClient } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 import { Preferences } from '@capacitor/preferences';
 
 import { api } from '~/utils/api';
@@ -26,7 +27,7 @@ import OrganizationStructure from './pages/OrganizationStructure';
 import Notification from './pages/Notification';
 import StoriesPage from './pages/Stories';
 import Article from './pages/Article';
-import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
+import AlQuran from './pages/AlQuran';
 
 setupIonicReact({});
 
@@ -80,6 +81,7 @@ const AppShell = () => {
                 exact
               />
               <PrivateRoute path="/article/:slug" component={Article} exact />
+              <PrivateRoute path="/alquran" component={AlQuran} exact />
 
               <AuthRoute path="/auth/user-check" component={UserCheck} exact />
               <AuthRoute path="/auth/register" component={Register} exact />
