@@ -13,7 +13,7 @@ import { api } from '~/utils/api';
 import ArticleCard from '../molecules/article-card';
 
 export default function Home() {
-  const { data: article } = api.article.index.useQuery();
+  const { data: article } = api.article.index.useQuery({});
 
   return (
     <IonPage>
@@ -21,7 +21,7 @@ export default function Home() {
         <HomeWidget />
       </IonHeader>
       <IonContent>
-        <div className="mt-[230px]">
+        <div className="mt-[210px]">
           <IonGrid className="mt-4 w-full pb-4 shadow-md">
             <IonRow>
               <IonCol size="3">

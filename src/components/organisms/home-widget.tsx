@@ -1,12 +1,17 @@
 import dayjs from 'dayjs';
+import { location } from 'ionicons/icons';
+
 import { useAuthStore } from '~/store/auth-store';
+import { usePrayerTimes } from '~/queries/prayer-times';
+import { IonIcon } from '@ionic/react';
 
 export function HomeWidget() {
   const { user } = useAuthStore();
+  const { nextPrayerTime, city, state } = usePrayerTimes();
 
   return (
     <div className="fixed left-0 top-0 z-20 w-full">
-      <div className="bg-primary-gradient h-[200px] w-full px-6 py-8">
+      <div className="bg-primary-gradient h-[180px] w-full px-6 py-8">
         <img
           src="/assets/vector/line.svg"
           alt="line-vector"
@@ -32,11 +37,16 @@ export function HomeWidget() {
       </div>
       <div className="px-6">
         <div
-          className="h-[90px] w-full rounded-xl bg-white p-4 shadow-lg"
-          style={{ marginTop: -70 }}
+          className="flex w-full items-center rounded-xl bg-white px-4 py-5 shadow-lg"
+          style={{ marginTop: -60 }}
         >
-          <p className="text-sm font-medium">Semarang, Jawa Tengah</p>
-          <p className="mt-1 text-xs">Dzuhur 11:15 WIB</p>
+          <IonIcon className="size-5 text-primary" icon={location} />
+          <div className="ml-3 flex flex-col">
+            <p className="text-xs font-semibold">
+              {city}, {state}
+            </p>
+            <p className="mt-1 text-xs">{nextPrayerTime}</p>
+          </div>
         </div>
       </div>
     </div>

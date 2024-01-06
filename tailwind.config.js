@@ -1,7 +1,18 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+const konstaConfig = require('konsta/config');
+
+module.exports = konstaConfig({
   content: ['src/pages/**/*.{js,ts,jsx,tsx}', 'src/components/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'media',
+  konsta: {
+    colors: {
+      primary: '#009788',
+      secondary: '#EABD00',
+      tertiary: '#CCD2D2',
+      light: '#f4f5f8',
+      medium: '#92949c',
+      dark: '#222428',
+    },
+  },
   theme: {
     extend: {
       colors: {
@@ -18,4 +29,4 @@ module.exports = {
     },
   },
   plugins: [require('tailwindcss-animate')],
-};
+});

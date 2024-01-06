@@ -14,7 +14,7 @@ import { type AppRouter } from '~/server/api/root';
 const getBaseUrl = () => {
   if (typeof window !== 'undefined') return ''; // browser should use relative url
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
-  return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
+  return `http://0.0.0.0:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 };
 
 let token: string =
@@ -64,6 +64,8 @@ export const api = createTRPCNext<AppRouter>({
       queryClientConfig: {
         defaultOptions: {
           queries: {
+            refetchOnWindowFocus: false,
+            cacheTime: 1000 * 60 * 60 * 24, // 24 hours
             retry: (failureCount, error) => {
               if (failureCount > 1) return false;
               return true;
