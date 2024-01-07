@@ -4,6 +4,7 @@ import { location } from 'ionicons/icons';
 import { useAuthStore } from '~/store/auth-store';
 import { usePrayerTimes } from '~/queries/prayer-times';
 import { IonIcon } from '@ionic/react';
+import { Link } from 'react-router-dom';
 
 export function HomeWidget() {
   const { user } = useAuthStore();
@@ -28,11 +29,13 @@ export function HomeWidget() {
               </p>
             </div>
           </div>
-          <img
-            className="h-12 w-12 rounded-full"
-            src={`https://i.pravatar.cc/150?img=${2}`}
-            alt="avatar"
-          />
+          <Link className="relative z-30" to="/profile">
+            <img
+              className="h-12 w-12 rounded-full"
+              src={`https://i.pravatar.cc/150?img=${2}`}
+              alt="avatar"
+            />
+          </Link>
         </div>
       </div>
       <div className="px-6">

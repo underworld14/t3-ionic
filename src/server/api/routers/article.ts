@@ -11,6 +11,7 @@ export const articleRouter = createTRPCRouter({
         .object({
           size: z.number().optional(),
           page: z.number().optional(),
+          search: z.string().optional(),
         })
         .optional(),
     )

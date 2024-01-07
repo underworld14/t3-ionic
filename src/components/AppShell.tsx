@@ -5,7 +5,6 @@ import { StatusBar, Style } from '@capacitor/status-bar';
 import { KonstaProvider } from 'konsta/react';
 
 import { IonReactRouter } from '@ionic/react-router';
-import { Route } from 'react-router-dom';
 
 import { useQueryClient } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
@@ -28,6 +27,13 @@ import Notification from './pages/Notification';
 import StoriesPage from './pages/Stories';
 import Article from './pages/Article';
 import AlQuran from './pages/AlQuran';
+import Profile from './pages/Profile/Profile';
+import ProfileMenu from './pages/Profile/ProfileMenu';
+import ProfileGeneralInformation from './pages/Profile/ProfileGeneralInformation';
+import ProfileBio from './pages/Profile/ProfileBio';
+import ProfileMemberCardNumber from './pages/Profile/ProfileMemberCardNumber';
+import ProfileTeacherStatus from './pages/Profile/ProfileTeacherStatus';
+import ProfileUpdatePassword from './pages/Profile/ProfileUpdatePassword';
 
 setupIonicReact({});
 
@@ -82,6 +88,22 @@ const AppShell = () => {
               />
               <PrivateRoute path="/article/:slug" component={Article} exact />
               <PrivateRoute path="/alquran" component={AlQuran} exact />
+              <PrivateRoute path="/profile" component={Profile} exact />
+              <PrivateRoute path="/profile/menu" component={ProfileMenu} exact />
+              <PrivateRoute
+                path="/profile/menu/general-information"
+                component={ProfileGeneralInformation}
+              />
+              <PrivateRoute path="/profile/menu/bio" component={ProfileBio} />
+              <PrivateRoute
+                path="/profile/menu/member-card-number"
+                component={ProfileMemberCardNumber}
+              />
+              <PrivateRoute path="/profile/menu/teacher-status" component={ProfileTeacherStatus} />
+              <PrivateRoute
+                path="/profile/menu/update-password"
+                component={ProfileUpdatePassword}
+              />
 
               <AuthRoute path="/auth/user-check" component={UserCheck} exact />
               <AuthRoute path="/auth/register" component={Register} exact />
