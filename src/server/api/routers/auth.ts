@@ -5,6 +5,7 @@ import { createTRPCRouter, publicProcedure, authorizedProcedure } from '~/server
 import { TRPCError } from '@trpc/server';
 import { registerSchema } from '~/schemas/register-schema';
 import { loginSchema } from '~/schemas/login-schema';
+import { updatePasswordSchema } from '~/schemas/update-password-schema';
 import { encodeJwtToken } from '~/server/utils/security';
 
 export const authRouter = createTRPCRouter({
@@ -68,6 +69,7 @@ export const authRouter = createTRPCRouter({
       token,
     };
   }),
+
   check: authorizedProcedure.query(async ({ ctx }) => {
     const user = await ctx.db.users.findFirst({
       where: {
@@ -86,4 +88,43 @@ export const authRouter = createTRPCRouter({
       data: omit(user, 'password'),
     };
   }),
+
+  updatePassword: authorizedProcedure
+    .input(updatePasswordSchema)
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.users.findFirst({
+        where: {
+          id: ctx.user.id,
+        },
+      });
+
+      if (!user) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'Invalid token',
+        });
+      }
+
+      const valid = await compare(input.current_password, user.password);
+
+      if (!valid) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Password lama salah',
+        });
+      }
+
+      await ctx.db.users.update({
+        where: {
+          id: ctx.user.id,
+        },
+        data: {
+          password: await hash(input.password, 10),
+        },
+      });
+
+      return {
+        message: 'Berhasil mengubah password',
+      };
+    }),
 });
