@@ -35,6 +35,7 @@ import ProfileMemberCardNumber from './pages/Profile/ProfileMemberCardNumber';
 import ProfileTeacherStatus from './pages/Profile/ProfileTeacherStatus';
 import ProfileUpdatePassword from './pages/Profile/ProfileUpdatePassword';
 import Events from './pages/Event/Events';
+import CreateEvent from './pages/Event/CreateEvent';
 
 setupIonicReact({});
 
@@ -106,6 +107,7 @@ const AppShell = () => {
                 path="/profile/menu/update-password"
                 component={ProfileUpdatePassword}
               />
+              <PrivateRoute path="/events/create-event" component={CreateEvent} />
 
               <AuthRoute path="/auth/user-check" component={UserCheck} exact />
               <AuthRoute path="/auth/register" component={Register} exact />

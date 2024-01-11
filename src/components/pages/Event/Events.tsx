@@ -19,15 +19,17 @@ export default function Events() {
   return (
     <IonPage>
       <IonHeader>
-        <div className="fixed left-0 top-0 flex h-[72px] w-full items-center  bg-white px-6">
-          <button className="btn-icon btn-icon-light">
-            <IonIcon className="h-6 w-6 text-black" icon={chevronBackOutline} />
-          </button>
-          <h1 className="ml-4 w-full text-center font-semibold text-black">Acara</h1>
-          <div className="ml-auto">
-            <IonIcon className="h-6 w-6 text-black" icon={addOutline} />
-          </div>
-        </div>
+        <Header
+          shadow={false}
+          title="Acara"
+          whiteHeader={true}
+          titleCenter={true}
+          rightElement={
+            <Link to={'/events/create-event'}>
+              <IonIcon className="h-6 w-6 text-black" icon={addOutline} />
+            </Link>
+          }
+        />
       </IonHeader>
       <IonContent>
         <div className="mt-[72px] pb-6">
