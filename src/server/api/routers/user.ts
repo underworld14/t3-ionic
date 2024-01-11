@@ -81,7 +81,7 @@ export const userRouter = createTRPCRouter({
         unit_kerja: z.string().optional(),
         headmaster_name: z.string().optional(),
         headmaster_nip: z.string().optional(),
-        teaching_level: z.enum(['SD', 'SMP', 'SMA', 'D1', 'D2', 'D3', 'S1', 'S2', 'S3']).optional(),
+        teaching_level: z.enum(['SD', 'SMP', 'SMA', 'D1', 'D2', 'D3', 'D4', 'S1', 'S2', 'S3']).optional(),
         bio: z.string().optional(),
         province_id: z.number().optional(),
         city_id: z.number().optional(),
@@ -96,6 +96,44 @@ export const userRouter = createTRPCRouter({
           id: ctx.user.id,
         },
       });
+
+      const profile = await ctx.db.profiles.findFirst({
+        where: {
+          user_id: user.id
+        }
+      })
+
+      if (!profile) {
+        await Promise.all([
+          ctx.db.users.update({
+            data: {
+              name: input.name,
+            },
+            where: {
+              id: user.id,
+            },
+          }),
+          ctx.db.profiles.create({
+            data: {
+              user_id: user.id,
+              nik: input.nik,
+              nip: input.nip,
+              contact: input.contact,
+              birthdate: input.birthdate,
+              gender: input.gender,
+              teaching_level: input.teaching_level,
+              bio: input.bio,
+              province_id: input.province_id,
+              city_id: input.city_id,
+              district_id: input.district_id,
+              teacher_status: input.teacher_status,
+              salary: input.salary,
+              unit_kerja: input.unit_kerja,
+              headmaster_name: input.headmaster_name,
+            },
+          }),
+        ]);
+      }
 
       await Promise.all([
         ctx.db.users.update({

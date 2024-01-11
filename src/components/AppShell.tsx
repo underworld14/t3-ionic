@@ -34,6 +34,7 @@ import ProfileBio from './pages/Profile/ProfileBio';
 import ProfileMemberCardNumber from './pages/Profile/ProfileMemberCardNumber';
 import ProfileTeacherStatus from './pages/Profile/ProfileTeacherStatus';
 import ProfileUpdatePassword from './pages/Profile/ProfileUpdatePassword';
+import Events from './pages/Event/Events';
 
 setupIonicReact({});
 
@@ -80,6 +81,7 @@ const AppShell = () => {
               <PrivateRoute path="/agpaii-home/notification" component={Notification} exact />
               <PrivateRoute path="/agpaii-home/create-post" component={CreatePost} exact />
               <PrivateRoute path="/agpaii-home/stories/:id" component={StoriesPage} exact />
+              <PrivateRoute path="/agpaii-home/events" component={Events} exact />
               <PrivateRoute path="/member-information" component={MemberInformation} exact />
               <PrivateRoute
                 path="/organization-structure"
