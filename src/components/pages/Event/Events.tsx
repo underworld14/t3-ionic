@@ -54,6 +54,38 @@ export default function Events() {
               <EventCard />
               <EventCard />
             </TabPanel>
+
+            <TabPanel index={1} activeTab={tab}>
+            <div className="flex w-full items-center gap-5">
+                <IonInput
+                  className="rounded-full bg-gray-100 px-2 text-black"
+                  placeholder="    Cari Nama Acara"
+                />
+                <Button>
+                  <IonIcon className="h-6 w-6 text-black" icon={funnelOutline} />
+                </Button>
+              </div>
+
+              <EventCard />
+              <EventCard />
+              <EventCard />
+            </TabPanel>
+
+            <TabPanel index={2} activeTab={tab}>
+            <div className="flex w-full items-center gap-5">
+                <IonInput
+                  className="rounded-full bg-gray-100 px-2 text-black"
+                  placeholder="    Cari Nama Acara"
+                />
+                <Button>
+                  <IonIcon className="h-6 w-6 text-black" icon={funnelOutline} />
+                </Button>
+              </div>
+
+              <EventCard />
+              <EventCard />
+              <EventCard />
+            </TabPanel>
           </div>
         </div>
       </IonContent>

@@ -36,6 +36,12 @@ import ProfileTeacherStatus from './pages/Profile/ProfileTeacherStatus';
 import ProfileUpdatePassword from './pages/Profile/ProfileUpdatePassword';
 import Events from './pages/Event/Events';
 import CreateEvent from './pages/Event/CreateEvent';
+import EventDetail from './pages/Event/EventDetail';
+import CreateEventForm from './pages/Event/CreateEventForm';
+import Presensi from './pages/Event/Presensi';
+import QRCodePresensi from './pages/Event/QRCodePresensi';
+import ParticipantList from './pages/Event/ParticipantList';
+import ParticipantPresenceDetail from './pages/Event/ParticipantPresenceDetail';
 
 setupIonicReact({});
 
@@ -108,6 +114,12 @@ const AppShell = () => {
                 component={ProfileUpdatePassword}
               />
               <PrivateRoute path="/events/create-event" component={CreateEvent} />
+              <PrivateRoute path="/events/create-event-form" component={CreateEventForm} />
+              <PrivateRoute path="/events/event-detail" component={EventDetail} />
+              <PrivateRoute path="/events/event-detail/presensi" component={Presensi} />
+              <PrivateRoute path="/events/event-detail/qr-code-presensi" component={QRCodePresensi} />
+              <PrivateRoute path="/events/event-detail/participant-list" component={ParticipantList} />
+              <PrivateRoute path="/participant-list/participant-presence-detail" component={ParticipantPresenceDetail} />
 
               <AuthRoute path="/auth/user-check" component={UserCheck} exact />
               <AuthRoute path="/auth/register" component={Register} exact />

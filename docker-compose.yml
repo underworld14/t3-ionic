@@ -15,4 +15,10 @@ services:
     
 networks: 
   mysql-network:
+    enable_ipv6: true
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 2001:3200:3200::/64
+          gateway: 2001:3200:3200::1

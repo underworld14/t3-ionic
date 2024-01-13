@@ -33,7 +33,7 @@ export default function EventCard() {
         </div>
       </div>
       <Link
-        to={'/'}
+        to={'/events/event-detail'}
         className="text-md mt-2 flex w-full items-center justify-center rounded-b-xl bg-primary py-3 text-white hover:underline"
       >
         Preview
