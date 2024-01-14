@@ -27,7 +27,7 @@ export default function Presensi() {
 
   return (
     <IonPage>
-      {/* <IonBackdrop className={cn(open && `bg-tertiary opacity-75`)} onClick={() => setOpen(false)} visible={open}></IonBackdrop> */}
+      {/* {open && <IonBackdrop className={cn(open && `bg-tertiary opacity-75`)} onClick={() => setOpen(false)} visible={open}></IonBackdrop>} */}
       <IonHeader>
         <Header title="Presensi" whiteHeader={true} titleCenter={true} />
       </IonHeader>

@@ -42,6 +42,18 @@ import Presensi from './pages/Event/Presensi';
 import QRCodePresensi from './pages/Event/QRCodePresensi';
 import ParticipantList from './pages/Event/ParticipantList';
 import ParticipantPresenceDetail from './pages/Event/ParticipantPresenceDetail';
+import OtherMenu from './pages/OtherMenu';
+import AgpaiiModule from './pages/AgpaiiModule/AgpaiiModule';
+import ModuleSearch from './pages/AgpaiiModule/ModuleSearch';
+import MyModule from './pages/AgpaiiModule/MyModule';
+import FavouriteModule from './pages/AgpaiiModule/FavouriteModule';
+import MyDraft from './pages/AgpaiiModule/MyDraft';
+import ModuleDetail from './pages/AgpaiiModule/ModuleDetail';
+import ReadingModule from './pages/AgpaiiModule/ReadingModule';
+import ModulJenjang from './pages/AgpaiiModule/ModulJenjang';
+import CreateModuleForm from './pages/AgpaiiModule/CreateModuleForm';
+import CreateModuleImage from './pages/AgpaiiModule/CreateModuleImage';
+import CreateBagianRTE from './pages/AgpaiiModule/CreateBagianRTE';
 
 setupIonicReact({});
 
@@ -99,6 +111,7 @@ const AppShell = () => {
               <PrivateRoute path="/alquran" component={AlQuran} exact />
               <PrivateRoute path="/profile" component={Profile} exact />
               <PrivateRoute path="/profile/menu" component={ProfileMenu} exact />
+              <PrivateRoute path="/lainya" component={OtherMenu} />
               <PrivateRoute
                 path="/profile/menu/general-information"
                 component={ProfileGeneralInformation}
@@ -113,13 +126,35 @@ const AppShell = () => {
                 path="/profile/menu/update-password"
                 component={ProfileUpdatePassword}
               />
+
+              <PrivateRoute path="/agpaii-module" component={AgpaiiModule} />
+              <PrivateRoute path="/agpaii-module/:id" component={ModuleDetail} />
+              <PrivateRoute path="/agpaii-module/:id/read-module" component={ReadingModule} />
+              <PrivateRoute path="/agpaii-module/create-module" component={CreateModuleForm} />
+              <PrivateRoute path="/agpaii-module/create-module-image" component={CreateModuleImage} />
+              <PrivateRoute path="/agpaii-module/create-bagian" component={CreateBagianRTE} />
+              <PrivateRoute path="/agpaii-module/modul-jenjang" component={ModulJenjang} />
+              <PrivateRoute path="/agpaii-module/my-module" component={MyModule} />
+              <PrivateRoute path="/agpaii-module/module-search" component={ModuleSearch} />
+              <PrivateRoute path="/agpaii-module/favourite-module" component={FavouriteModule} />
+              <PrivateRoute path="/agpaii-module/my-draft" component={MyDraft} />
+
               <PrivateRoute path="/events/create-event" component={CreateEvent} />
               <PrivateRoute path="/events/create-event-form" component={CreateEventForm} />
               <PrivateRoute path="/events/event-detail" component={EventDetail} />
               <PrivateRoute path="/events/event-detail/presensi" component={Presensi} />
-              <PrivateRoute path="/events/event-detail/qr-code-presensi" component={QRCodePresensi} />
-              <PrivateRoute path="/events/event-detail/participant-list" component={ParticipantList} />
-              <PrivateRoute path="/participant-list/participant-presence-detail" component={ParticipantPresenceDetail} />
+              <PrivateRoute
+                path="/events/event-detail/qr-code-presensi"
+                component={QRCodePresensi}
+              />
+              <PrivateRoute
+                path="/events/event-detail/participant-list"
+                component={ParticipantList}
+              />
+              <PrivateRoute
+                path="/participant-list/participant-presence-detail"
+                component={ParticipantPresenceDetail}
+              />
 
               <AuthRoute path="/auth/user-check" component={UserCheck} exact />
               <AuthRoute path="/auth/register" component={Register} exact />

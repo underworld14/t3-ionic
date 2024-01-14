@@ -12,6 +12,7 @@ import 'react-spring-bottom-sheet/dist/style.css';
 
 import '../styles/global.css';
 import '../styles/variables.css';
+import 'react-quill/dist/quill.snow.css'
 
 function MyApp({ Component, pageProps }: any) {
   return (

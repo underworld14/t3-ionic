@@ -1,6 +1,6 @@
 import { IonIcon, IonBackButton } from '@ionic/react';
 import { chevronBackOutline } from 'ionicons/icons';
-import { Link, useHistory } from 'react-router-dom';
+import {  useHistory } from 'react-router-dom';
 import cn from 'classnames';
 interface HeaderProps {
   rightElement?: React.ReactNode;

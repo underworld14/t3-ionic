@@ -48,7 +48,7 @@ export function TabItem({
   return (
     <li role="presentation" className="flex-1 text-center hover:cursor-pointer">
       <a
-        className={twMerge(
+        className={twMerge(className,
           'block border-x-0 border-b-2 border-t-0 border-transparent px-7 py-4 text-xs font-medium uppercase leading-tight text-neutral-500 transition-all duration-100 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent',
           isActive
             ? 'data-[te-nav-active]:border-primary data-[te-nav-active]:text-primary'
