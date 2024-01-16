@@ -100,7 +100,6 @@ const AppShell = () => {
               <PrivateRoute path="/agpaii-home/notification" component={Notification} exact />
               <PrivateRoute path="/agpaii-home/create-post" component={CreatePost} exact />
               <PrivateRoute path="/agpaii-home/stories/:id" component={StoriesPage} exact />
-              <PrivateRoute path="/agpaii-home/events" component={Events} exact />
               <PrivateRoute path="/member-information" component={MemberInformation} exact />
               <PrivateRoute
                 path="/organization-structure"
@@ -131,7 +130,10 @@ const AppShell = () => {
               <PrivateRoute path="/agpaii-module/:id" component={ModuleDetail} />
               <PrivateRoute path="/agpaii-module/:id/read-module" component={ReadingModule} />
               <PrivateRoute path="/agpaii-module/create-module" component={CreateModuleForm} />
-              <PrivateRoute path="/agpaii-module/create-module-image" component={CreateModuleImage} />
+              <PrivateRoute
+                path="/agpaii-module/create-module-image"
+                component={CreateModuleImage}
+              />
               <PrivateRoute path="/agpaii-module/create-bagian" component={CreateBagianRTE} />
               <PrivateRoute path="/agpaii-module/modul-jenjang" component={ModulJenjang} />
               <PrivateRoute path="/agpaii-module/my-module" component={MyModule} />
@@ -139,6 +141,8 @@ const AppShell = () => {
               <PrivateRoute path="/agpaii-module/favourite-module" component={FavouriteModule} />
               <PrivateRoute path="/agpaii-module/my-draft" component={MyDraft} />
 
+              {/* events */}
+              <PrivateRoute path="/events" component={Events} exact />
               <PrivateRoute path="/events/create-event" component={CreateEvent} />
               <PrivateRoute path="/events/create-event-form" component={CreateEventForm} />
               <PrivateRoute path="/events/event-detail" component={EventDetail} />

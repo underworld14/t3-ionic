@@ -8,9 +8,8 @@ const icons = {
   'info-anggota': '/assets/icons/info-anggota.svg',
   'struktur-organisasi': '/assets/icons/struktur-organisasi.svg',
   alquran: '/assets/icons/alquran.svg',
-  'latihan-soal': '/assets/icons/latihan-soal.svg',
-  'arah-kiblat': '/assets/icons/arah-kiblat.svg',
-  lainya: '/assets/icons/lainya.svg',
+  event: '/assets/icons/event.svg',
+  'digital-module': '/assets/icons/digital-module.svg',
 };
 
 interface HomeMenuProps {

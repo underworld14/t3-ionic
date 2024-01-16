@@ -46,13 +46,10 @@ export default function Home() {
                 <HomeMenu icon="alquran" to="/alquran" title="Al-Qur'an" />
               </IonCol>
               <IonCol size="3">
-                <HomeMenu icon="latihan-soal" to="/latihan-soal" title="Latihan Soal" />
+                <HomeMenu icon="event" to="/events" title="Event / Acara" />
               </IonCol>
               <IonCol size="3">
-                <HomeMenu icon="arah-kiblat" to="/arah-kiblat" title="Arah Kiblat" />
-              </IonCol>
-              <IonCol size="3">
-                <HomeMenu icon="lainya" to="/lainya" title="Lainya" />
+                <HomeMenu icon="digital-module" to="/agpaii-module" title="Modul Digital" />
               </IonCol>
             </IonRow>
           </IonGrid>
