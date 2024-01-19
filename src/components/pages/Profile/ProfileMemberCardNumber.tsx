@@ -31,7 +31,7 @@ export default function ProfileMemberCardNumber() {
   const provinces = api.location.indexProvince.useQuery();
 
   const profileRegion = api.user.getCurrentProfile.useQuery();
-  const updateProfileRegion = api.user.updateUserProfile.useMutation();
+  const updateProfileRegion = api.user.updateUserRegion.useMutation();
 
   const { register, reset, handleSubmit } = useForm<ProfilMemberCardSchema>({
     resolver: profileMemberCardSchemaResolver,

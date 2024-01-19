@@ -74,9 +74,9 @@ model profiles {
   teaching_level  teaching_level?
   teacher_status  teacher_status?
   salary          Int?
-  status_kepegawaian  status_kepegawaian
-  certified       Boolean          @default(false)
-  inpassing       Boolean          @default(false)
+  status_kepegawaian  status_kepegawaian?
+  certified       Boolean?          @default(false)
+  inpassing       Boolean?         @default(false)
   bank_account    String?
   cities          cities?          @relation(fields: [city_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "profiles_city_id_foreign")
   districts       districts?       @relation(fields: [district_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "profiles_district_id_foreign")

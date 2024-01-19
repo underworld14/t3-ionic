@@ -1,4 +1,12 @@
-import { IonContent, IonHeader, IonPage, IonList, IonItem, IonTextarea, useIonToast } from '@ionic/react';
+import {
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonList,
+  IonItem,
+  IonTextarea,
+  useIonToast,
+} from '@ionic/react';
 import { useForm } from 'react-hook-form';
 import { Button } from '~/components/atoms';
 import { Header } from '~/components/molecules';
@@ -6,32 +14,30 @@ import { BiografiSchema } from '~/schemas/biografi-schema';
 import { api } from '~/utils/api';
 
 export default function ProfileBio() {
-
-  const { data } = api.user.getCurrentProfile.useQuery()
-  const updateProfile = api.user.updateUserProfile.useMutation()
+  const { data } = api.user.getCurrentProfile.useQuery();
+  const updateProfile = api.user.updateBio.useMutation();
   const [toast] = useIonToast();
 
   const { register, reset, handleSubmit } = useForm<BiografiSchema>({
     defaultValues: {
-      bio: data?.profile?.bio || undefined
-    }
-  })
+      bio: data?.profile?.bio || undefined,
+    },
+  });
 
   const onSubmit = async (data: BiografiSchema) => {
     try {
-      await updateProfile.mutateAsync(data)
+      await updateProfile.mutateAsync({ bio: data.bio });
       toast({
         message: 'Berhasil memperbarui Profile Bio',
         duration: 3000,
       });
-
     } catch (error: any) {
       toast({
         message: error.message,
         duration: 3000,
       });
     }
-  }
+  };
 
   return (
     <IonPage>
@@ -43,7 +49,7 @@ export default function ProfileBio() {
           <IonList>
             <IonItem>
               <IonTextarea
-                {...register("bio")}
+                {...register('bio')}
                 autoFocus
                 labelPlacement="stacked"
                 label="Biografi"
@@ -54,7 +60,12 @@ export default function ProfileBio() {
           </IonList>
 
           <div className="pb-6">
-            <Button onClick={handleSubmit(onSubmit)} className="mt-6 w-full" color="primary" size="md">
+            <Button
+              onClick={handleSubmit(onSubmit)}
+              className="mt-6 w-full"
+              color="primary"
+              size="md"
+            >
               Simpan
             </Button>
           </div>
