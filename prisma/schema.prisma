@@ -53,35 +53,35 @@ model districts {
 }
 
 model profiles {
-  id              Int              @id @default(autoincrement())
-  user_id         Int              @unique
-  nip             String?
-  nik             String?
-  contact         String?
-  school_place    String?
-  home_address    String?
-  unit_kerja      String?
-  gender          profiles_gender?
-  birthdate       DateTime?        @db.Date
-  created_at      DateTime         @default(now())
-  updated_at      DateTime         @default(now()) @updatedAt
-  province_id     Int?
-  city_id         Int?
-  district_id     Int?
-  bio             String?          @db.Text
-  headmaster_name String?
-  headmaster_nip  String?
-  teaching_level  teaching_level?
-  teacher_status  teacher_status?
-  salary          Int?
-  status_kepegawaian  status_kepegawaian
-  certified       Boolean          @default(false)
-  inpassing       Boolean          @default(false)
-  bank_account    String?
-  cities          cities?          @relation(fields: [city_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "profiles_city_id_foreign")
-  districts       districts?       @relation(fields: [district_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "profiles_district_id_foreign")
-  provinces       provinces?       @relation(fields: [province_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "profiles_province_id_foreign")
-  user            users            @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "profiles_user_id_foreign")
+  id                 Int                @id @default(autoincrement())
+  user_id            Int                @unique
+  nip                String?
+  nik                String?
+  contact            String?
+  school_place       String?
+  home_address       String?
+  unit_kerja         String?
+  gender             profiles_gender?
+  birthdate          DateTime?          @db.Date
+  created_at         DateTime           @default(now())
+  updated_at         DateTime           @default(now()) @updatedAt
+  province_id        Int?
+  city_id            Int?
+  district_id        Int?
+  headmaster_name    String?
+  headmaster_nip     String?
+  bio                String?            @db.Text
+  salary             Int?
+  teacher_status     teacher_status?
+  teaching_level     teaching_level?
+  bank_account       String?
+  certified          Boolean            @default(false)
+  inpassing          Boolean            @default(false)
+  status_kepegawaian status_kepegawaian
+  cities             cities?            @relation(fields: [city_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "profiles_city_id_foreign")
+  districts          districts?         @relation(fields: [district_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "profiles_district_id_foreign")
+  provinces          provinces?         @relation(fields: [province_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "profiles_province_id_foreign")
+  user               users              @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "profiles_user_id_foreign")
 
   @@index([city_id], map: "profiles_city_id_foreign")
   @@index([district_id], map: "profiles_district_id_foreign")
@@ -99,17 +99,19 @@ model provinces {
 }
 
 model users {
-  id                Int        @id @default(autoincrement())
-  kta_id            String?    @unique(map: "UNIQUE")
+  id                Int            @id @default(autoincrement())
+  kta_id            String?        @unique(map: "UNIQUE")
   name              String
-  email             String     @unique(map: "users_email_unique")
-  email_verified_at DateTime?  @db.Timestamp(0)
+  email             String         @unique(map: "users_email_unique")
+  email_verified_at DateTime?      @db.Timestamp(0)
   password          String
-  created_at        DateTime   @default(now())
-  updated_at        DateTime   @default(now()) @updatedAt
+  created_at        DateTime       @default(now())
+  updated_at        DateTime       @default(now()) @updatedAt
   position_id       Int?
+  activated_at      DateTime?
   profile           profiles?
-  position          positions? @relation(fields: [position_id], references: [id], map: "users_position_id_foreign")
+  transactions      transactions[]
+  position          positions?     @relation(fields: [position_id], references: [id], map: "users_position_id_foreign")
 
   @@index([position_id], map: "users_position_id_foreign")
 }
@@ -121,6 +123,37 @@ model positions {
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
   users       users[]
+}
+
+model payment_types {
+  id           Int            @id @default(autoincrement())
+  name         String
+  description  String?
+  amount       Int
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @default(now()) @updatedAt
+  code         String
+  transactions transactions[]
+}
+
+model transactions {
+  id                Int           @id @default(autoincrement())
+  title             String
+  amount            Int
+  user_id           Int
+  payment_type_id   Int
+  snap_token        String?
+  status            String        @default("pending")
+  created_at        DateTime      @default(now())
+  updated_at        DateTime      @default(now()) @updatedAt
+  snap_redirect_url String?
+  order_id          String        @unique(map: "transactions_order_id_unique")
+  payment_type      payment_types @relation(fields: [payment_type_id], references: [id])
+  user              users         @relation(fields: [user_id], references: [id])
+  raw_response      String?       @db.Text
+
+  @@index([payment_type_id], map: "transactions_payment_type_id_fkey")
+  @@index([user_id], map: "transactions_user_id_fkey")
 }
 
 enum profiles_gender {

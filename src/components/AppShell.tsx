@@ -9,10 +9,12 @@ import { IonReactRouter } from '@ionic/react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Preferences } from '@capacitor/preferences';
 
 import { api } from '~/utils/api';
 import { PrivateRoute, AuthRoute } from './molecules';
+import { MemberDuesCheck } from './organisms';
 
 // pages
 import UserCheck from './pages/Auth/UserCheck';
@@ -165,7 +167,9 @@ const AppShell = () => {
               <AuthRoute path="/auth/login" component={Login} exact />
             </IonRouterOutlet>
           </IonReactRouter>
+          <MemberDuesCheck />
         </IonApp>
+        <ReactQueryDevtools initialIsOpen={false} />
       </KonstaProvider>
     </PersistQueryClientProvider>
   );

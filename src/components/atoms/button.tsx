@@ -10,8 +10,9 @@ export const button = tv({
       grey: 'bg-[#979797]',
     },
     size: {
-      sm: 'py-[6px] px-5 text-xs',
-      md: 'py-2 px-4 text-base',
+      xs: 'py-2 px-4 text-xs',
+      sm: 'py-2 px-5 text-sm',
+      md: 'py-2 px-5 text-base',
       xl: 'py-3 px-6 text-lg',
     },
     state: {

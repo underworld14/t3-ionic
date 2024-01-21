@@ -54,3 +54,10 @@ body {
 .form-group .error {
   @apply mt-1 text-xs text-red-500;
 }
+
+ion-modal#memberdues-modal {
+  --width: 300px;
+  --height: fit-content;
+  --border-radius: 20px;
+  --box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.15);
+}
