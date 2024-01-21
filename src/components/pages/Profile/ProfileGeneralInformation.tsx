@@ -19,52 +19,41 @@ import { Button } from '~/components/atoms';
 import { api } from '~/utils/api';
 import { useForm } from 'react-hook-form';
 import {
+  GENDER,
   ProfileGeneralInformationSchema,
+  TEACHING_LEVEL,
   profileGeneralInformationResolver,
 } from '~/schemas/profile-general-information-schema';
 
 export default function ProfileGeneralInformation() {
   const { data } = api.user.getCurrentProfile.useQuery();
-  const updateProfile = api.user.updateUserProfile.useMutation()
+  const updateProfile = api.user.updateProfileGeneralInformation.useMutation();
   const [toast] = useIonToast();
   const {
     register,
-    handleSubmit,
     reset,
+    handleSubmit,
     formState: { errors },
   } = useForm<ProfileGeneralInformationSchema>({
     resolver: profileGeneralInformationResolver,
-    defaultValues: {
-      name: data?.name,
-      nik: data?.profile?.nik || undefined,
-      nip: data?.profile?.nip || undefined,
-      birthdate: data?.profile?.birthdate?.toString() || undefined,
-      gender: data?.profile?.gender || undefined,
-      contact: data?.profile?.contact || undefined,
-      teaching_level: data?.profile?.teaching_level || undefined,
-      unit_kerja: data?.profile?.unit_kerja || undefined,
-      headmaster_name: data?.profile?.headmaster_name || undefined,
-      headmaster_nip: data?.profile?.headmaster_nip || undefined,
-      school_place: data?.profile?.school_place || undefined
-    }
-  })
+  });
 
   const onSubmit = async (data: ProfileGeneralInformationSchema) => {
-    try {
-      console.info('before', data)
-      await updateProfile.mutateAsync(data)
-      toast({
-        message: 'Berhasil memperbarui profil',
-        duration: 3000,
-      });
-      console.info('after', data)
-    } catch (error: any) {
-      toast({
-        message: error.message,
-        duration: 3000,
-      });
-    }
-  }
+    console.info('before', data);
+    // try {
+    //   await updateProfile.mutateAsync(data)
+    //   toast({
+    //     message: 'Berhasil memperbarui profil',
+    //     duration: 3000,
+    //   });
+    //   console.info('after', data)
+    // } catch (error: any) {
+    //   toast({
+    //     message: error.message,
+    //     duration: 3000,
+    //   });
+    // }
+  };
 
   return (
     <IonPage>
@@ -77,9 +66,9 @@ export default function ProfileGeneralInformation() {
           <IonList>
             <IonItem className="py-1">
               <IonInput
-                {...register("name")}
+                {...register('name')}
                 label="Nama"
-                placeholder='Isi nama lengkapmu'
+                placeholder="Isi nama lengkapmu"
                 labelPlacement="stacked"
               ></IonInput>
             </IonItem>
@@ -104,8 +93,8 @@ export default function ProfileGeneralInformation() {
 
             <IonItem className="py-1">
               <IonLabel>Tanggal Lahir</IonLabel>
-              <input type='date' placeholder='Masukkan tanggal lahir' />
-              {/* <IonDatetimeButton {...register("birthdate")} datetime="datetime" /> */}
+              <input  type="date" placeholder="Masukkan tanggal lahir" />
+              {/* <IonDatetimeButton  datetime="datetime" /> */}
             </IonItem>
 
             <IonItem className="py-1">
@@ -115,8 +104,8 @@ export default function ProfileGeneralInformation() {
                 labelPlacement="stacked"
                 placeholder="Masukkan jenis kelamin"
               >
-                <IonSelectOption value="laki-laki">Laki-laki</IonSelectOption>
-                <IonSelectOption value="perempuan">Perempuan</IonSelectOption>
+                <IonSelectOption value={GENDER.L}>Laki-laki</IonSelectOption>
+                <IonSelectOption value={GENDER.P}>Perempuan</IonSelectOption>
               </IonSelect>
             </IonItem>
 
@@ -136,11 +125,16 @@ export default function ProfileGeneralInformation() {
                 labelPlacement="stacked"
                 placeholder="Masukkan jenjang ajar"
               >
-                <IonSelectOption value="sd">SD</IonSelectOption>
-                <IonSelectOption value="smp">SMP</IonSelectOption>
-                <IonSelectOption value="sma">SMA</IonSelectOption>
-                <IonSelectOption value="smk">SMK</IonSelectOption>
-                <IonSelectOption value="pt">PT</IonSelectOption>
+                <IonSelectOption value={TEACHING_LEVEL.SD}>SD</IonSelectOption>
+                <IonSelectOption value={TEACHING_LEVEL.SMP}>SMP</IonSelectOption>
+                <IonSelectOption value={TEACHING_LEVEL.SMA}>SMA</IonSelectOption>
+                <IonSelectOption value={TEACHING_LEVEL.D1}>D1</IonSelectOption>
+                <IonSelectOption value={TEACHING_LEVEL.D2}>D2</IonSelectOption>
+                <IonSelectOption value={TEACHING_LEVEL.D3}>D3</IonSelectOption>
+                <IonSelectOption value={TEACHING_LEVEL.D4}>D4</IonSelectOption>
+                <IonSelectOption value={TEACHING_LEVEL.S1}>S1</IonSelectOption>
+                <IonSelectOption value={TEACHING_LEVEL.S2}>S2</IonSelectOption>
+                <IonSelectOption value={TEACHING_LEVEL.S3}>S3</IonSelectOption>
               </IonSelect>
             </IonItem>
 
@@ -182,7 +176,12 @@ export default function ProfileGeneralInformation() {
           </IonList>
 
           <div className="pb-6">
-            <Button onClick={handleSubmit(onSubmit)} className="mt-6 w-full" color="primary" size="md">
+            <Button
+              onClick={handleSubmit(onSubmit)}
+              className="mt-6 w-full"
+              color="primary"
+              size="md"
+            >
               Simpan
             </Button>
           </div>
