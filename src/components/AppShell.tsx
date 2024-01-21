@@ -98,68 +98,132 @@ const AppShell = () => {
           <IonReactRouter>
             <IonRouterOutlet id="main">
               <PrivateRoute path="/" component={Home} exact />
-              <PrivateRoute path="/agpaii-home" component={AgpaiiHome} exact />
-              <PrivateRoute path="/agpaii-home/notification" component={Notification} exact />
-              <PrivateRoute path="/agpaii-home/create-post" component={CreatePost} exact />
-              <PrivateRoute path="/agpaii-home/stories/:id" component={StoriesPage} exact />
-              <PrivateRoute path="/member-information" component={MemberInformation} exact />
+              <PrivateRoute path="/agpaii-home" component={AgpaiiHome} exact activatedOnly />
+              <PrivateRoute
+                path="/agpaii-home/notification"
+                component={Notification}
+                exact
+                activatedOnly
+              />
+              <PrivateRoute
+                path="/agpaii-home/create-post"
+                component={CreatePost}
+                exact
+                activatedOnly
+              />
+              <PrivateRoute
+                path="/agpaii-home/stories/:id"
+                component={StoriesPage}
+                exact
+                activatedOnly
+              />
+              <PrivateRoute
+                path="/member-information"
+                component={MemberInformation}
+                exact
+                activatedOnly
+              />
               <PrivateRoute
                 path="/organization-structure"
                 component={OrganizationStructure}
                 exact
+                activatedOnly
               />
               <PrivateRoute path="/article/:slug" component={Article} exact />
               <PrivateRoute path="/alquran" component={AlQuran} exact />
-              <PrivateRoute path="/profile" component={Profile} exact />
-              <PrivateRoute path="/profile/menu" component={ProfileMenu} exact />
-              <PrivateRoute path="/lainya" component={OtherMenu} />
+              <PrivateRoute path="/profile" component={Profile} exact activatedOnly />
+              <PrivateRoute path="/profile/menu" component={ProfileMenu} exact activatedOnly />
+              <PrivateRoute path="/lainya" component={OtherMenu} activatedOnly />
               <PrivateRoute
                 path="/profile/menu/general-information"
                 component={ProfileGeneralInformation}
+                activatedOnly
               />
-              <PrivateRoute path="/profile/menu/bio" component={ProfileBio} />
+              <PrivateRoute path="/profile/menu/bio" component={ProfileBio} activatedOnly />
               <PrivateRoute
                 path="/profile/menu/member-card-number"
                 component={ProfileMemberCardNumber}
+                activatedOnly
               />
-              <PrivateRoute path="/profile/menu/teacher-status" component={ProfileTeacherStatus} />
+              <PrivateRoute
+                path="/profile/menu/teacher-status"
+                component={ProfileTeacherStatus}
+                activatedOnly
+              />
               <PrivateRoute
                 path="/profile/menu/update-password"
                 component={ProfileUpdatePassword}
+                activatedOnly
               />
 
-              <PrivateRoute path="/agpaii-module" component={AgpaiiModule} />
-              <PrivateRoute path="/agpaii-module/:id" component={ModuleDetail} />
-              <PrivateRoute path="/agpaii-module/:id/read-module" component={ReadingModule} />
-              <PrivateRoute path="/agpaii-module/create-module" component={CreateModuleForm} />
+              <PrivateRoute path="/agpaii-module" component={AgpaiiModule} activatedOnly />
+              <PrivateRoute path="/agpaii-module/:id" component={ModuleDetail} activatedOnly />
+              <PrivateRoute
+                path="/agpaii-module/:id/read-module"
+                component={ReadingModule}
+                activatedOnly
+              />
+              <PrivateRoute
+                path="/agpaii-module/create-module"
+                component={CreateModuleForm}
+                activatedOnly
+              />
               <PrivateRoute
                 path="/agpaii-module/create-module-image"
                 component={CreateModuleImage}
+                activatedOnly
               />
-              <PrivateRoute path="/agpaii-module/create-bagian" component={CreateBagianRTE} />
-              <PrivateRoute path="/agpaii-module/modul-jenjang" component={ModulJenjang} />
-              <PrivateRoute path="/agpaii-module/my-module" component={MyModule} />
-              <PrivateRoute path="/agpaii-module/module-search" component={ModuleSearch} />
-              <PrivateRoute path="/agpaii-module/favourite-module" component={FavouriteModule} />
-              <PrivateRoute path="/agpaii-module/my-draft" component={MyDraft} />
+              <PrivateRoute
+                path="/agpaii-module/create-bagian"
+                component={CreateBagianRTE}
+                activatedOnly
+              />
+              <PrivateRoute
+                path="/agpaii-module/modul-jenjang"
+                component={ModulJenjang}
+                activatedOnly
+              />
+              <PrivateRoute path="/agpaii-module/my-module" component={MyModule} activatedOnly />
+              <PrivateRoute
+                path="/agpaii-module/module-search"
+                component={ModuleSearch}
+                activatedOnly
+              />
+              <PrivateRoute
+                path="/agpaii-module/favourite-module"
+                component={FavouriteModule}
+                activatedOnly
+              />
+              <PrivateRoute path="/agpaii-module/my-draft" component={MyDraft} activatedOnly />
 
               {/* events */}
-              <PrivateRoute path="/events" component={Events} exact />
-              <PrivateRoute path="/events/create-event" component={CreateEvent} />
-              <PrivateRoute path="/events/create-event-form" component={CreateEventForm} />
-              <PrivateRoute path="/events/event-detail" component={EventDetail} />
-              <PrivateRoute path="/events/event-detail/presensi" component={Presensi} />
+              <PrivateRoute path="/events" component={Events} exact activatedOnly />
+              <PrivateRoute path="/events/create-event" component={CreateEvent} activatedOnly />
+              <PrivateRoute
+                path="/events/create-event-form"
+                component={CreateEventForm}
+                activatedOnly
+              />
+              <PrivateRoute path="/events/event-detail" component={EventDetail} activatedOnly />
+              <PrivateRoute
+                path="/events/event-detail/presensi"
+                component={Presensi}
+                activatedOnly
+              />
               <PrivateRoute
                 path="/events/event-detail/qr-code-presensi"
                 component={QRCodePresensi}
+                activatedOnly
               />
               <PrivateRoute
                 path="/events/event-detail/participant-list"
                 component={ParticipantList}
+                activatedOnly
               />
               <PrivateRoute
                 path="/participant-list/participant-presence-detail"
                 component={ParticipantPresenceDetail}
+                activatedOnly
               />
 
               <AuthRoute path="/auth/user-check" component={UserCheck} exact />
