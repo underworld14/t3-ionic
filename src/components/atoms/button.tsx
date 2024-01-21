@@ -21,10 +21,6 @@ export const button = tv({
     shape: {
       rounded: 'rounded-2xl',
     },
-    defaultVariants: {
-      color: 'primary',
-      size: 'md',
-    },
   },
 });
 
@@ -54,3 +50,10 @@ export function Button({
     </button>
   );
 }
+
+Button.defaultProps = {
+  color: 'primary',
+  size: 'md',
+  shape: 'rounded',
+  loading: false,
+};

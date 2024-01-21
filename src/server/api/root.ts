@@ -1,3 +1,5 @@
+import '../crons/membership-payment';
+
 import { createTRPCRouter } from '~/server/api/trpc';
 import { userRouter } from './routers/user';
 import { authRouter } from './routers/auth';

@@ -99,19 +99,20 @@ model provinces {
 }
 
 model users {
-  id                Int            @id @default(autoincrement())
-  kta_id            String?        @unique(map: "UNIQUE")
-  name              String
-  email             String         @unique(map: "users_email_unique")
-  email_verified_at DateTime?      @db.Timestamp(0)
-  password          String
-  created_at        DateTime       @default(now())
-  updated_at        DateTime       @default(now()) @updatedAt
-  position_id       Int?
-  activated_at      DateTime?
-  profile           profiles?
-  transactions      transactions[]
-  position          positions?     @relation(fields: [position_id], references: [id], map: "users_position_id_foreign")
+  id                  Int                   @id @default(autoincrement())
+  kta_id              String?               @unique(map: "UNIQUE")
+  name                String
+  email               String                @unique(map: "users_email_unique")
+  email_verified_at   DateTime?             @db.Timestamp(0)
+  password            String
+  created_at          DateTime              @default(now())
+  updated_at          DateTime              @default(now()) @updatedAt
+  position_id         Int?
+  activated_at        DateTime?
+  profile             profiles?
+  transactions        transactions[]
+  membership_payments membership_payments[]
+  position            positions?            @relation(fields: [position_id], references: [id], map: "users_position_id_foreign")
 
   @@index([position_id], map: "users_position_id_foreign")
 }
@@ -137,23 +138,38 @@ model payment_types {
 }
 
 model transactions {
-  id                Int           @id @default(autoincrement())
-  title             String
-  amount            Int
-  user_id           Int
-  payment_type_id   Int
-  snap_token        String?
-  status            String        @default("pending")
-  created_at        DateTime      @default(now())
-  updated_at        DateTime      @default(now()) @updatedAt
-  snap_redirect_url String?
-  order_id          String        @unique(map: "transactions_order_id_unique")
-  payment_type      payment_types @relation(fields: [payment_type_id], references: [id])
-  user              users         @relation(fields: [user_id], references: [id])
-  raw_response      String?       @db.Text
+  id                 Int                  @id @default(autoincrement())
+  title              String
+  amount             Int
+  user_id            Int
+  payment_type_id    Int
+  snap_token         String?
+  status             String               @default("pending")
+  created_at         DateTime             @default(now())
+  updated_at         DateTime             @default(now()) @updatedAt
+  snap_redirect_url  String?
+  order_id           String               @unique(map: "transactions_order_id_unique")
+  payment_type       payment_types        @relation(fields: [payment_type_id], references: [id])
+  user               users                @relation(fields: [user_id], references: [id])
+  raw_response       String?              @db.Text
+  membership_payment membership_payments?
 
   @@index([payment_type_id], map: "transactions_payment_type_id_fkey")
   @@index([user_id], map: "transactions_user_id_fkey")
+}
+
+model membership_payments {
+  id             Int      @id @default(autoincrement())
+  user_id        Int
+  amount         Int
+  start_period  DateTime @default(now())
+  end_period    DateTime @default(now())
+  transaction_id Int?     @unique
+  created_at     DateTime @default(now())
+  updated_at     DateTime @default(now()) @updatedAt
+
+  user        users         @relation(fields: [user_id], references: [id], map: "membership_payments_user_id_foreign")
+  transaction transactions? @relation(fields: [transaction_id], references: [id], map: "membership_payments_transaction_id_foreign")
 }
 
 enum profiles_gender {
