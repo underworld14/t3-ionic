@@ -290,4 +290,20 @@ export const transactionRouter = createTRPCRouter({
       membershipPayment,
     };
   }),
+  indexUserTransaction: authorizedProcedure.query(async ({ ctx }) => {
+    const transactions = await ctx.db.transactions.findMany({
+      where: {
+        user_id: ctx.user.id,
+      },
+      orderBy: {
+        created_at: 'desc',
+      },
+      include: {
+        payment_type: true,
+        membership_payment: true,
+      },
+    });
+
+    return transactions;
+  }),
 });

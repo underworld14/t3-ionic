@@ -19,7 +19,7 @@ export const PrivateRoute = ({ component: Component, activatedOnly, ...rest }: a
   });
 
   useEffect(() => {
-    if (activatedOnly && !data?.data?.activated_at) {
+    if (activatedOnly && data?.data && !data?.data?.activated_at) {
       setModalRestricted(true);
     }
   }, [data, activatedOnly]);
@@ -40,7 +40,7 @@ export const PrivateRoute = ({ component: Component, activatedOnly, ...rest }: a
                   buttons={['OK']}
                   onDidDismiss={() => {
                     setModalRestricted(false);
-                    // history.replace('/');
+                    history.replace('/');
                   }}
                 />
               )}

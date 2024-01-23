@@ -1,10 +1,10 @@
-import { Prisma } from '@prisma/client';
-import { omit } from 'lodash-es';
 import { z } from 'zod';
+import { omit } from 'lodash-es';
+import { Prisma } from '@prisma/client';
 import { biografiSchema } from '~/schemas/biografi-schema';
 import { profileGeneralInformationSchema } from '~/schemas/profile-general-information-schema';
 import { profileMemberCardSchema } from '~/schemas/profile-member-card-schema';
-import {  profileTeacherStatusSchema } from '~/schemas/profile-teacher-status-schema';
+import { profileTeacherStatusSchema } from '~/schemas/profile-teacher-status-schema';
 
 import { createTRPCRouter, publicProcedure, authorizedProcedure } from '~/server/api/trpc';
 import { buildPaginationMetadata, getPagination } from '~/utils/helpers';
@@ -55,27 +55,21 @@ export const userRouter = createTRPCRouter({
     }),
 
   getCurrentProfile: authorizedProcedure.query(async ({ ctx }) => {
-    const user = await ctx.db.users.findFirstOrThrow({
+    const user = await ctx.db.users.findUniqueOrThrow({
       where: {
         id: ctx.user.id,
       },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        position: true,
-        kta_id: true,
+      include: {
         profile: true,
+        position: true,
       },
     });
 
-    return user;
+    return omit(user, ['password']);
   }),
 
   updateProfileGeneralInformation: authorizedProcedure
-    .input(
-      profileGeneralInformationSchema
-    )
+    .input(profileGeneralInformationSchema)
     .mutation(async ({ ctx, input }) => {
       const user = await ctx.db.users.findFirstOrThrow({
         where: {
@@ -85,33 +79,21 @@ export const userRouter = createTRPCRouter({
 
       await ctx.db.users.update({
         where: {
-          id: user?.id
+          id: user?.id,
         },
         data: {
-          name: input?.name
-        }
-      })
+          name: input?.name,
+        },
+      });
 
       await ctx.db?.profiles?.upsert({
         where: {
-          user_id: user.id
+          user_id: user.id,
         },
         update: {
           nik: input?.nik,
           nip: input?.nip,
-          birthdate: input?.birthdate ? new Date(input?.birthdate).toISOString() : null, 
-          gender: input?.gender,
-          contact: input?.contact,
-          teaching_level: input?.teaching_level,
-          unit_kerja: input?.unit_kerja,
-          headmaster_name: input?.headmaster_name,
-          headmaster_nip: input?.headmaster_nip,
-          school_place: input?.school_place
-        },
-        create: {
-          nik: input?.nik,
-          nip: input?.nip,
-          birthdate: input?.birthdate ? new Date(input?.birthdate).toISOString() : null, 
+          birthdate: input?.birthdate ? new Date(input?.birthdate).toISOString() : null,
           gender: input?.gender,
           contact: input?.contact,
           teaching_level: input?.teaching_level,
@@ -119,123 +101,132 @@ export const userRouter = createTRPCRouter({
           headmaster_name: input?.headmaster_name,
           headmaster_nip: input?.headmaster_nip,
           school_place: input?.school_place,
-          user_id: user?.id
-        }
-      
-      })
+        },
+        create: {
+          nik: input?.nik,
+          nip: input?.nip,
+          birthdate: input?.birthdate ? new Date(input?.birthdate).toISOString() : null,
+          gender: input?.gender,
+          contact: input?.contact,
+          teaching_level: input?.teaching_level,
+          unit_kerja: input?.unit_kerja,
+          headmaster_name: input?.headmaster_name,
+          headmaster_nip: input?.headmaster_nip,
+          school_place: input?.school_place,
+          user_id: user?.id,
+        },
+      });
 
       return {
         message: 'Profil berhasil diperbarui',
       };
     }),
-  updateBio: authorizedProcedure.input(
-    biografiSchema
-  ).mutation(async ({ctx, input}) => {
+
+  updateBio: authorizedProcedure.input(biografiSchema).mutation(async ({ ctx, input }) => {
     const user = await ctx.db.users.findFirstOrThrow({
       where: {
-        id: ctx.user?.id
-      }
-    })
+        id: ctx.user?.id,
+      },
+    });
 
     await ctx.db?.profiles?.upsert({
       where: {
-        user_id: user.id
+        user_id: user.id,
       },
       update: {
-        bio: input?.bio
+        bio: input?.bio,
       },
       create: {
         bio: input?.bio,
-        user_id: user?.id
-      }
-    
-    })
+        user_id: user?.id,
+      },
+    });
 
     return {
-      message: 'Bio berhasil diperbarui'
-    }
+      message: 'Bio berhasil diperbarui',
+    };
   }),
 
-  updateUserRegion: authorizedProcedure.input(
-    profileMemberCardSchema
-  ).mutation(async ({ctx, input} ) => {
-    const user = await ctx.db.users.findFirstOrThrow({
-      where: {
-        id: ctx.user?.id
-      }
-    })
-
-    const profile = await ctx.db?.profiles?.findFirst({
-      where: {
-        user_id: user?.id
-      }
-    })
-
-    if (profile && profile?.province_id && profile?.city_id && profile?.district_id) {
-      await ctx?.db?.users?.update({
+  updateUserRegion: authorizedProcedure
+    .input(profileMemberCardSchema)
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.users.findFirstOrThrow({
         where: {
-          id: user?.id
+          id: ctx.user?.id,
         },
-        data: {
-          kta_id: `${profile?.province_id}${profile?.city_id}${profile?.district_id}${user?.id}`
-        }
-      })
-    }
+      });
 
-    await ctx.db?.profiles?.upsert({
-      where: {
-        user_id: user.id
-      },
-      update: {
-        province_id: input?.province_id,
-        city_id: input?.city_id,
-        district_id: input?.district_id
-      },
-      create: {
-        province_id: input?.province_id,
-        city_id: input?.city_id,
-        district_id: input?.district_id,
-        user_id: user?.id
+      const profile = await ctx.db?.profiles?.findFirst({
+        where: {
+          user_id: user?.id,
+        },
+      });
+
+      if (profile && profile?.province_id && profile?.city_id && profile?.district_id) {
+        await ctx?.db?.users?.update({
+          where: {
+            id: user?.id,
+          },
+          data: {
+            kta_id: `${profile?.province_id}${profile?.city_id}${profile?.district_id}${user?.id}`,
+          },
+        });
       }
-    })
 
-    return {
-      message: 'User Region berhasil diperbarui'
-    }
-  }),
+      await ctx.db?.profiles?.upsert({
+        where: {
+          user_id: user.id,
+        },
+        update: {
+          province_id: input?.province_id,
+          city_id: input?.city_id,
+          district_id: input?.district_id,
+        },
+        create: {
+          province_id: input?.province_id,
+          city_id: input?.city_id,
+          district_id: input?.district_id,
+          user_id: user?.id,
+        },
+      });
 
-  updateUserStatus: authorizedProcedure.input(
-    profileTeacherStatusSchema
-  ).mutation(async ({ctx, input}) => {
-    const user = await ctx.db.users.findFirstOrThrow({
-      where: {
-        id: ctx.user?.id
-      }
-    })
+      return {
+        message: 'User Region berhasil diperbarui',
+      };
+    }),
 
-    await ctx.db?.profiles?.upsert({
-      where: {
-        user_id: user.id
-      },
-      update: {
-        teacher_status: input?.teacher_status,
-        salary: input?.salary ? Number(input?.salary) : 0,
-        status_kepegawaian: input?.status_kepegawaian,
-        certified: input?.certified,
-        inpassing: input?.inpassing,
-        bank_account: input?.bank_account
-      },
-      create: {
-        teacher_status: input?.teacher_status,
-        salary: input?.salary ? Number(input?.salary) : 0,
-        status_kepegawaian: input?.status_kepegawaian,
-        certified: input?.certified,
-        inpassing: input?.inpassing,
-        bank_account: input?.bank_account,
-        user_id: user?.id
-      }
-    })
+  updateUserStatus: authorizedProcedure
+    .input(profileTeacherStatusSchema)
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.users.findFirstOrThrow({
+        where: {
+          id: ctx.user?.id,
+        },
+      });
 
-    return 'Status guru telah diperbarui'
-  })
+      await ctx.db?.profiles?.upsert({
+        where: {
+          user_id: user.id,
+        },
+        update: {
+          teacher_status: input?.teacher_status,
+          salary: input?.salary ? Number(input?.salary) : 0,
+          status_kepegawaian: input?.status_kepegawaian,
+          certified: input?.certified,
+          inpassing: input?.inpassing,
+          bank_account: input?.bank_account,
+        },
+        create: {
+          teacher_status: input?.teacher_status,
+          salary: input?.salary ? Number(input?.salary) : 0,
+          status_kepegawaian: input?.status_kepegawaian,
+          certified: input?.certified,
+          inpassing: input?.inpassing,
+          bank_account: input?.bank_account,
+          user_id: user?.id,
+        },
+      });
+
+      return 'Status guru telah diperbarui';
+    }),
 });

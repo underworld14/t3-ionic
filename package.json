@@ -6,7 +6,7 @@
     "node": ">=16"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --port 5180",
     "build": "next build",
     "start": "next start",
     "export": "next export",
