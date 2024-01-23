@@ -36,6 +36,7 @@ model cities {
   provinces   provinces   @relation(fields: [province_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "cities_province_id_foreign")
   districts   districts[]
   profiles    profiles[]
+  events      events[]
 
   @@index([province_id], map: "cities_province_id_foreign")
 }
@@ -96,6 +97,7 @@ model provinces {
   updated_at DateTime   @default(now()) @updatedAt
   cities     cities[]
   profiles   profiles[]
+  events     events[]
 }
 
 model users {
@@ -113,6 +115,8 @@ model users {
   transactions        transactions[]
   membership_payments membership_payments[]
   position            positions?            @relation(fields: [position_id], references: [id], map: "users_position_id_foreign")
+  events              events[]
+  eventFollowed       followers_on_events[]
 
   @@index([position_id], map: "users_position_id_foreign")
 }
@@ -124,6 +128,68 @@ model positions {
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
   users       users[]
+}
+
+model events {
+  id             Int                   @id @default(autoincrement())
+  title          String?
+  start_time     DateTime?
+  end_time       DateTime?
+  session        String?
+  place          String?
+  province_id    Int?
+  city_id        Int?
+  facilities     String?
+  eventType      EventType?
+  description    String?
+  category_id    Int?
+  created_by     Int                   @unique
+  image_path     String?
+  creater        users?                @relation(fields: [created_by], references: [id], map: "event_created_by")
+  cities         cities?               @relation(fields: [city_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "event_city_id_foreign")
+  provinces      provinces?            @relation(fields: [province_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "event_province_id_foreign")
+  followers      followers_on_events[]
+  category       event_category?       @relation(fields: [category_id], references: [id], map: "event_category_id_foreign")
+  event_sessions event_session[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  @@index([created_by], map: "event_created_by")
+  @@index([city_id], map: "event_city_id_foreign")
+  @@index([province_id], map: "event_province_id_foreign")
+  @@index([category_id], map: "event_category_id_foreign")
+}
+
+model followers_on_events {
+  // id        Int    @id @default(autoincrement())
+  event_id Int
+  event    events @relation(fields: [event_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "followersOnEvents_event_id_foreign")
+  user_id  Int
+  user     users  @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "followersOnEvents_user_id_foreign")
+
+  @@id([event_id, user_id])
+}
+
+model event_category {
+  id          Int      @id @default(autoincrement())
+  category    String
+  description String?
+  events      events[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+}
+
+model event_session {
+  id          Int     @id @default(autoincrement())
+  session     String
+  description String?
+  event_id    Int
+  event       events  @relation(fields: [event_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "eventSession_event_id_foreign")
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 }
 
 model payment_types {
@@ -162,8 +228,8 @@ model membership_payments {
   id             Int      @id @default(autoincrement())
   user_id        Int
   amount         Int
-  start_period  DateTime @default(now())
-  end_period    DateTime @default(now())
+  start_period   DateTime @default(now())
+  end_period     DateTime @default(now())
   transaction_id Int?     @unique
   created_at     DateTime @default(now())
   updated_at     DateTime @default(now()) @updatedAt
@@ -205,4 +271,9 @@ enum status_kepegawaian {
   HONOR_YAYASAN
   HONOR_DAERAH
   HONOR_MURNI_SEKOLAH
+}
+
+enum EventType {
+  OFFLINE
+  ONLINE
 }

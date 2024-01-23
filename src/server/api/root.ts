@@ -6,7 +6,9 @@ import { authRouter } from './routers/auth';
 import { positionRouter } from './routers/positions';
 import { articleRouter } from './routers/article';
 import { locationRouter } from './routers/location';
+import { eventRouter } from './routers/event';
 import { transactionRouter } from './routers/transaction';
+import { eventCategoryRouter } from './routers/event_category';
 
 /**
  * This is the primary router for your server.
@@ -19,7 +21,9 @@ export const appRouter = createTRPCRouter({
   position: positionRouter,
   article: articleRouter,
   location: locationRouter,
+  event: eventRouter,
   transaction: transactionRouter,
+  eventCategory: eventCategoryRouter
 });
 
 // export type definition of API

@@ -8,6 +8,7 @@ import {
   IonSelect,
   IonSelectOption,
   useIonToast,
+  IonSpinner,
 } from '@ionic/react';
 import { card } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
@@ -26,6 +27,7 @@ export default function ProfileMemberCardNumber() {
   const [cityId, setCityId] = useState(0);
   const [toast] = useIonToast();
 
+  const { data } = api.user.getCurrentProfile.useQuery();
   const cities = api.location.indexCity.useQuery({ province_id: provinceId && provinceId });
   const disticts = api.location.indexDistrict.useQuery({ city_id: cityId && cityId });
   const provinces = api.location.indexProvince.useQuery();
@@ -33,7 +35,12 @@ export default function ProfileMemberCardNumber() {
   const profileRegion = api.user.getCurrentProfile.useQuery();
   const updateProfileRegion = api.user.updateUserRegion.useMutation();
 
-  const { register, reset, handleSubmit } = useForm<ProfilMemberCardSchema>({
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<ProfilMemberCardSchema>({
     resolver: profileMemberCardSchemaResolver,
     defaultValues: {
       province_id: profileRegion.data?.profile?.province_id || undefined,
@@ -43,9 +50,13 @@ export default function ProfileMemberCardNumber() {
   });
 
   useEffect(() => {
-    setProvinceId(profileRegion.data?.profile?.province_id ? profileRegion.data?.profile?.province_id : 0)
-    setCityId(profileRegion.data?.profile?.city_id ? profileRegion.data?.profile?.city_id : 0)
-  }, [])
+    if (profileRegion?.data?.profile) {
+      setProvinceId(
+        profileRegion.data?.profile?.province_id ? profileRegion.data?.profile?.province_id : 0,
+      );
+      setCityId(profileRegion.data?.profile?.city_id ? profileRegion.data?.profile?.city_id : 0);
+    }
+  }, []);
 
   const onSubmit = async (data: ProfilMemberCardSchema) => {
     try {
@@ -75,7 +86,7 @@ export default function ProfileMemberCardNumber() {
             <IonIcon className="size-8 text-white" icon={card} />
             <div className="ml-6 flex flex-col text-white">
               <div className="text-sm">Nomor Kartu Tanda Anggota</div>
-              <div className="text-xl font-semibold">3285110022</div>
+              <div className="text-xl font-semibold">{data?.kta_id}</div>
             </div>
           </div>
 
@@ -134,7 +145,11 @@ export default function ProfileMemberCardNumber() {
             color="primary"
             size="md"
           >
-            Simpan
+            {isSubmitting ? (
+              <IonSpinner className="h-4 w-4 text-white" name="circular"></IonSpinner>
+            ) : (
+              'Simpan'
+            )}
           </Button>
         </div>
       </IonContent>

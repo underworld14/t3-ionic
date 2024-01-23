@@ -12,6 +12,7 @@ import {
   IonSelect,
   IonSelectOption,
   useIonToast,
+  IonSpinner,
 } from '@ionic/react';
 
 import { Header } from '../../molecules';
@@ -24,6 +25,7 @@ import {
   TEACHING_LEVEL,
   profileGeneralInformationResolver,
 } from '~/schemas/profile-general-information-schema';
+import { payloadValidation } from '~/utils/helpers';
 
 export default function ProfileGeneralInformation() {
   const { data } = api.user.getCurrentProfile.useQuery();
@@ -33,26 +35,42 @@ export default function ProfileGeneralInformation() {
     register,
     reset,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<ProfileGeneralInformationSchema>({
     resolver: profileGeneralInformationResolver,
+    defaultValues: {
+      name: data?.name || undefined,
+      nik: data?.profile?.nik || undefined,
+      nip: data?.profile?.nip || undefined,
+      birthdate: (data?.profile?.birthdate)?.toString() || undefined,
+      gender: data?.profile?.gender as GENDER || undefined,
+      contact: data?.profile?.contact || undefined,
+      teaching_level: data?.profile?.teaching_level as TEACHING_LEVEL || undefined,
+      unit_kerja: data?.profile?.unit_kerja || undefined,
+      headmaster_name: data?.profile?.headmaster_name || undefined,
+      headmaster_nip: data?.profile?.headmaster_nip || undefined,
+      school_place: data?.profile?.school_place || undefined,
+    }
   });
 
   const onSubmit = async (data: ProfileGeneralInformationSchema) => {
     console.info('before', data);
-    // try {
-    //   await updateProfile.mutateAsync(data)
-    //   toast({
-    //     message: 'Berhasil memperbarui profil',
-    //     duration: 3000,
-    //   });
-    //   console.info('after', data)
-    // } catch (error: any) {
-    //   toast({
-    //     message: error.message,
-    //     duration: 3000,
-    //   });
-    // }
+    try {
+      const payload = payloadValidation(data)
+      console.log('filtered',payload)
+      await updateProfile.mutateAsync(data)
+      toast({
+        message: 'Berhasil memperbarui profil',
+        duration: 3000,
+      });
+      console.info('after', data)
+    
+    } catch (error: any) {
+      toast({
+        message: error.message,
+        duration: 3000,
+      });
+    }
   };
 
   return (
@@ -93,7 +111,7 @@ export default function ProfileGeneralInformation() {
 
             <IonItem className="py-1">
               <IonLabel>Tanggal Lahir</IonLabel>
-              <input  type="date" placeholder="Masukkan tanggal lahir" />
+              <input {...register("birthdate")}  type="date" placeholder="Masukkan tanggal lahir" />
               {/* <IonDatetimeButton  datetime="datetime" /> */}
             </IonItem>
 
@@ -182,7 +200,7 @@ export default function ProfileGeneralInformation() {
               color="primary"
               size="md"
             >
-              Simpan
+              {isSubmitting ? <IonSpinner className='text-white h-4 w-4' name="circular"></IonSpinner>  : "Simpan"}
             </Button>
           </div>
         </div>

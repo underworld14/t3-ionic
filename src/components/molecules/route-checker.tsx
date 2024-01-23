@@ -40,7 +40,7 @@ export const PrivateRoute = ({ component: Component, activatedOnly, ...rest }: a
                   buttons={['OK']}
                   onDidDismiss={() => {
                     setModalRestricted(false);
-                    history.replace('/');
+                    // history.replace('/');
                   }}
                 />
               )}

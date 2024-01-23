@@ -6,6 +6,7 @@ import {
   IonItem,
   IonTextarea,
   useIonToast,
+  IonSpinner,
 } from '@ionic/react';
 import { useForm } from 'react-hook-form';
 import { Button } from '~/components/atoms';
@@ -18,7 +19,7 @@ export default function ProfileBio() {
   const updateProfile = api.user.updateBio.useMutation();
   const [toast] = useIonToast();
 
-  const { register, reset, handleSubmit } = useForm<BiografiSchema>({
+  const { register, reset, handleSubmit, formState: { isSubmitting } } = useForm<BiografiSchema>({
     defaultValues: {
       bio: data?.profile?.bio || undefined,
     },
@@ -66,7 +67,7 @@ export default function ProfileBio() {
               color="primary"
               size="md"
             >
-              Simpan
+              {isSubmitting ? <IonSpinner className='text-white h-4 w-4' name="circular"></IonSpinner>  : "Simpan"}
             </Button>
           </div>
         </div>

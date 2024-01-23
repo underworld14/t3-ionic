@@ -14,3 +14,10 @@ export function getPagination(page: number = 1, size: number = 10) {
 
   return { skip, take, page, size };
 }
+
+export function payloadValidation(obj: any): any {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([_, value]) => value !== undefined && value !== '')
+  );
+}
+ 

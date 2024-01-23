@@ -1,7 +1,10 @@
 import { Prisma } from '@prisma/client';
 import { omit } from 'lodash-es';
 import { z } from 'zod';
-import { STATUS_KEPEGAWAIAN, TEACHER_STATUS, profileTeacherStatusSchema } from '~/schemas/profile-teacher-status-schema';
+import { biografiSchema } from '~/schemas/biografi-schema';
+import { profileGeneralInformationSchema } from '~/schemas/profile-general-information-schema';
+import { profileMemberCardSchema } from '~/schemas/profile-member-card-schema';
+import {  profileTeacherStatusSchema } from '~/schemas/profile-teacher-status-schema';
 
 import { createTRPCRouter, publicProcedure, authorizedProcedure } from '~/server/api/trpc';
 import { buildPaginationMetadata, getPagination } from '~/utils/helpers';
@@ -71,27 +74,7 @@ export const userRouter = createTRPCRouter({
 
   updateProfileGeneralInformation: authorizedProcedure
     .input(
-      z.object({
-        // user table
-        name: z.string().optional(),
-        nik: z.string().optional(),
-        nip: z.string().optional(),
-        contact: z.string().optional(),
-        birthdate: z.string().optional(),
-        gender: z.enum(['L', 'P']).optional(),
-        unit_kerja: z.string().optional(),
-        headmaster_name: z.string().optional(),
-        headmaster_nip: z.string().optional(),
-        teaching_level: z.enum(['SD', 'SMP', 'SMA', 'D1', 'D2', 'D3', 'D4', 'S1', 'S2', 'S3']).optional(),
-        school_place: z.string().optional()
-        // bio: z.string().optional(),
-        // teacher_status: z.enum(['ASN', 'NON_ASN', 'PPK']).optional(),
-        // salary: z.number().optional(),
-        // status_kepegawaian: z.enum(['PNS_PEMDA', 'PNS_KEMENAG', 'PPPK_PEMDA', 'PPPK_KEMENAG', 'GTY', 'HONOR_YAYASAN', 'HONOR_DAERAH', 'HONOR_MURNI_SEKOLAH']).optional(),
-        // certified: z.boolean().optional(),
-        // inpassing: z.boolean().optional(),
-        // bank_account: z.string().optional()
-      }),
+      profileGeneralInformationSchema
     )
     .mutation(async ({ ctx, input }) => {
       const user = await ctx.db.users.findFirstOrThrow({
@@ -100,92 +83,53 @@ export const userRouter = createTRPCRouter({
         },
       });
 
-      const profile = await ctx.db.profiles.findFirst({
+      await ctx.db.users.update({
         where: {
-          user_id: user.id
+          id: user?.id
+        },
+        data: {
+          name: input?.name
         }
       })
 
-      if (!profile) {
-        await Promise.all([
-          ctx.db.users.update({
-            data: {
-              name: input.name,
-            },
-            where: {
-              id: user.id,
-            },
-          }),
-          ctx.db.profiles.create({
-            data: {
-              user_id: user.id,
-              nik: input.nik,
-              nip: input.nip,
-              contact: input.contact,
-              birthdate: input.birthdate,
-              gender: input.gender,
-              teaching_level: input.teaching_level,
-              // bio: input.bio,
-              // province_id: input.province_id,
-              // city_id: input.city_id,
-              // district_id: input.district_id,
-              // teacher_status: input.teacher_status,
-              // salary: input.salary,
-              // unit_kerja: input.unit_kerja,
-              headmaster_name: input.headmaster_name,
-              // status_kepegawaian: input.status_kepegawaian,
-              // certified: input.certified,
-              // inpassing: input.inpassing,
-              // bank_account: input.bank_account
-            },
-          }),
-        ]);
-      }
-
-      await Promise.all([
-        ctx.db.users.update({
-          data: {
-            name: input.name,
-          },
-          where: {
-            id: user.id,
-          },
-        }),
-        ctx.db.profiles.update({
-          data: {
-            nik: input.nik,
-            nip: input.nip,
-            contact: input.contact,
-            birthdate: input.birthdate,
-            gender: input.gender,
-            teaching_level: input.teaching_level,
-            // bio: input.bio,
-            // province_id: input.province_id,
-            // city_id: input.city_id,
-            // district_id: input.district_id,
-            // teacher_status: input.teacher_status,
-            // salary: input.salary,
-            unit_kerja: input.unit_kerja,
-            headmaster_name: input.headmaster_name,
-            // status_kepegawaian: input.status_kepegawaian,
-            // certified: input.certified,
-            // inpassing: input.inpassing,
-            // bank_account: input.bank_account
-          },
-          where: {
-            user_id: user.id,
-          },
-        }),
-      ]);
+      await ctx.db?.profiles?.upsert({
+        where: {
+          user_id: user.id
+        },
+        update: {
+          nik: input?.nik,
+          nip: input?.nip,
+          birthdate: input?.birthdate ? new Date(input?.birthdate).toISOString() : null, 
+          gender: input?.gender,
+          contact: input?.contact,
+          teaching_level: input?.teaching_level,
+          unit_kerja: input?.unit_kerja,
+          headmaster_name: input?.headmaster_name,
+          headmaster_nip: input?.headmaster_nip,
+          school_place: input?.school_place
+        },
+        create: {
+          nik: input?.nik,
+          nip: input?.nip,
+          birthdate: input?.birthdate ? new Date(input?.birthdate).toISOString() : null, 
+          gender: input?.gender,
+          contact: input?.contact,
+          teaching_level: input?.teaching_level,
+          unit_kerja: input?.unit_kerja,
+          headmaster_name: input?.headmaster_name,
+          headmaster_nip: input?.headmaster_nip,
+          school_place: input?.school_place,
+          user_id: user?.id
+        }
+      
+      })
 
       return {
         message: 'Profil berhasil diperbarui',
       };
     }),
   updateBio: authorizedProcedure.input(
-    z.object({
-      bio: z.string().optional()
-    })
+    biografiSchema
   ).mutation(async ({ctx, input}) => {
     const user = await ctx.db.users.findFirstOrThrow({
       where: {
@@ -213,17 +157,30 @@ export const userRouter = createTRPCRouter({
   }),
 
   updateUserRegion: authorizedProcedure.input(
-    z.object({
-      province_id: z.number().optional(),
-      city_id: z.number().optional(),
-      district_id: z.number().optional(),
-    })
+    profileMemberCardSchema
   ).mutation(async ({ctx, input} ) => {
     const user = await ctx.db.users.findFirstOrThrow({
       where: {
         id: ctx.user?.id
       }
     })
+
+    const profile = await ctx.db?.profiles?.findFirst({
+      where: {
+        user_id: user?.id
+      }
+    })
+
+    if (profile && profile?.province_id && profile?.city_id && profile?.district_id) {
+      await ctx?.db?.users?.update({
+        where: {
+          id: user?.id
+        },
+        data: {
+          kta_id: `${profile?.province_id}${profile?.city_id}${profile?.district_id}${user?.id}`
+        }
+      })
+    }
 
     await ctx.db?.profiles?.upsert({
       where: {

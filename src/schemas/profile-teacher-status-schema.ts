@@ -20,7 +20,7 @@ export enum STATUS_KEPEGAWAIAN {
 
 export const profileTeacherStatusSchema = z.object({
     teacher_status: z.enum([TEACHER_STATUS.ASN, TEACHER_STATUS.NON_ASN, TEACHER_STATUS.PPK]).optional(),
-    salary: z.onumber().optional(),
+    salary: z.coerce.number().optional(),
     status_kepegawaian: z.enum([STATUS_KEPEGAWAIAN.PNS_PEMDA, STATUS_KEPEGAWAIAN.PNS_KEMENAG, STATUS_KEPEGAWAIAN.PPPK_KEMENAG, STATUS_KEPEGAWAIAN.PPPK_PEMDA, STATUS_KEPEGAWAIAN.GTY, STATUS_KEPEGAWAIAN.HONOR_DAERAH, STATUS_KEPEGAWAIAN.HONOR_MURNI_SEKOLAH, STATUS_KEPEGAWAIAN.HONOR_YAYASAN]).optional(),
     certified: z.boolean().optional(),
     bank_account: z.string().optional(),

@@ -8,13 +8,18 @@ import {
   IonSelectOption,
   IonInput,
   useIonToast,
+  IonSpinner,
 } from '@ionic/react';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '~/components/atoms';
 
 import { Header } from '~/components/molecules';
-import { ProfileTeacherStatusSchema, STATUS_KEPEGAWAIAN, TEACHER_STATUS } from '~/schemas/profile-teacher-status-schema';
+import {
+  ProfileTeacherStatusSchema,
+  STATUS_KEPEGAWAIAN,
+  TEACHER_STATUS,
+} from '~/schemas/profile-teacher-status-schema';
 import { api } from '~/utils/api';
 
 export default function ProfileTeacherStatus() {
@@ -22,27 +27,36 @@ export default function ProfileTeacherStatus() {
   const updateTeacherStatus = api.user.updateUserStatus.useMutation();
   const [toast] = useIonToast();
 
-  const { register, reset, handleSubmit } = useForm<ProfileTeacherStatusSchema>({
+  const { register, reset, handleSubmit, formState: { isSubmitting } } = useForm<ProfileTeacherStatusSchema>({
     defaultValues: {
-      // teacher_status: data?.profile?.teacher_status || undefined,
-      // status_kepegawaian: data?.profile?.status_kepegawaian || undefined,
-      // certified: data?.profile?.certified || undefined,
-      // inpassing: data?.profile?.inpassing || undefined,
-      // salary: data?.profile?.salary || undefined,
+      teacher_status: (data?.profile?.teacher_status as TEACHER_STATUS) || undefined,
+      status_kepegawaian: (data?.profile?.status_kepegawaian as STATUS_KEPEGAWAIAN) || undefined,
+      certified: data?.profile?.certified || undefined,
+      inpassing: data?.profile?.inpassing || undefined,
+      salary: (data?.profile?.salary as number) || undefined,
     },
   });
 
+  useEffect(() => {
+    if (data?.profile) {
+      reset({
+        teacher_status: data?.profile?.teacher_status as TEACHER_STATUS,
+        status_kepegawaian: data?.profile?.status_kepegawaian as STATUS_KEPEGAWAIAN,
+        certified: data?.profile?.certified ? data?.profile?.certified : false,
+        inpassing: data?.profile?.inpassing ? data?.profile?.inpassing : false,
+      });
+    }
+  }, []);
+
   const onSubmit = async (data: ProfileTeacherStatusSchema) => {
     try {
-      
-      const salary = data.salary ? +data.salary : 0
-      const payload = {salary, ...data}
+      const salary = (data.salary ? Number(data.salary) : 0) as number;
+      const payload = { salary, ...data };
       await updateTeacherStatus.mutateAsync(payload);
       toast({
         message: 'Berhasil memperbarui status',
         duration: 3000,
       });
-      
     } catch (error: any) {
       toast({
         message: error.message,
@@ -75,6 +89,7 @@ export default function ProfileTeacherStatus() {
             <IonItem className="py-1">
               <IonInput
                 {...register('salary')}
+                type="number"
                 label="Gaji Pokok"
                 placeholder="Masukkan besaran gaji"
                 labelPlacement="stacked"
@@ -83,31 +98,49 @@ export default function ProfileTeacherStatus() {
 
             <IonItem className="py-1">
               <IonSelect
-                {...register("status_kepegawaian")}
+                {...register('status_kepegawaian')}
                 label="Status Kepegawaian"
                 placeholder="Pilih status kepegawaian anda"
                 labelPlacement="stacked"
               >
                 <IonSelectOption value={STATUS_KEPEGAWAIAN.PNS_PEMDA}>PNS Pemda</IonSelectOption>
-                <IonSelectOption value={STATUS_KEPEGAWAIAN.PNS_KEMENAG}>⁠PNS Kemenag</IonSelectOption>
+                <IonSelectOption value={STATUS_KEPEGAWAIAN.PNS_KEMENAG}>
+                  ⁠PNS Kemenag
+                </IonSelectOption>
                 <IonSelectOption value={STATUS_KEPEGAWAIAN.PPPK_PEMDA}>PPPK Pemda</IonSelectOption>
-                <IonSelectOption value={STATUS_KEPEGAWAIAN.PPPK_KEMENAG}>⁠PPPK Kemenag</IonSelectOption>
+                <IonSelectOption value={STATUS_KEPEGAWAIAN.PPPK_KEMENAG}>
+                  ⁠PPPK Kemenag
+                </IonSelectOption>
                 <IonSelectOption value={STATUS_KEPEGAWAIAN.GTY}>Guru Tetap Yayasan</IonSelectOption>
-                <IonSelectOption value={STATUS_KEPEGAWAIAN.HONOR_YAYASAN}>⁠Honor Yayasan</IonSelectOption>
-                <IonSelectOption value={STATUS_KEPEGAWAIAN.HONOR_MURNI_SEKOLAH}>Honor Murni Sekolah</IonSelectOption>
-                <IonSelectOption value={STATUS_KEPEGAWAIAN.HONOR_DAERAH}>Honor Daerah</IonSelectOption>
+                <IonSelectOption value={STATUS_KEPEGAWAIAN.HONOR_YAYASAN}>
+                  ⁠Honor Yayasan
+                </IonSelectOption>
+                <IonSelectOption value={STATUS_KEPEGAWAIAN.HONOR_MURNI_SEKOLAH}>
+                  Honor Murni Sekolah
+                </IonSelectOption>
+                <IonSelectOption value={STATUS_KEPEGAWAIAN.HONOR_DAERAH}>
+                  Honor Daerah
+                </IonSelectOption>
               </IonSelect>
             </IonItem>
 
             <IonItem className="py-1">
-              <IonSelect {...register("certified")} label="Apakah Sudah Sertifikasi?" labelPlacement="stacked">
+              <IonSelect
+                {...register('certified')}
+                label="Apakah Sudah Sertifikasi?"
+                labelPlacement="stacked"
+              >
                 <IonSelectOption value={true}>sudah</IonSelectOption>
                 <IonSelectOption value={false}>belum</IonSelectOption>
               </IonSelect>
             </IonItem>
 
             <IonItem className="py-1">
-              <IonSelect {...register("inpassing")} label="Apakah Sudah Inpassing?" labelPlacement="stacked">
+              <IonSelect
+                {...register('inpassing')}
+                label="Apakah Sudah Inpassing?"
+                labelPlacement="stacked"
+              >
                 <IonSelectOption value={true}>sudah</IonSelectOption>
                 <IonSelectOption value={false}>belum</IonSelectOption>
               </IonSelect>
@@ -115,9 +148,9 @@ export default function ProfileTeacherStatus() {
 
             <IonItem className="py-1">
               <IonInput
-                {...register('salary')}
+                {...register('bank_account')}
                 label="Rekening BSI (Bank Syariah Indonesia)"
-                placeholder="Masukkan rekening BSI andnpm"
+                placeholder="Masukkan rekening BSI Anda"
                 labelPlacement="stacked"
               ></IonInput>
             </IonItem>
@@ -129,7 +162,7 @@ export default function ProfileTeacherStatus() {
             color="primary"
             size="md"
           >
-            Simpan
+            {isSubmitting ? <IonSpinner className='text-white h-4 w-4' name="circular"></IonSpinner>  : "Simpan"}
           </Button>
         </div>
       </IonContent>
