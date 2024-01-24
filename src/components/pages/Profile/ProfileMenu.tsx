@@ -47,23 +47,25 @@ export default function ProfileMenu() {
 
       <IonContent fullscreen>
         <div className="mt-[72px] flex flex-col">
-          {menus.map((menu, i) => (
-            <Link
-              to={menu.to}
-              key={i}
-              className="ion-activatable ripple-parent flex items-center justify-between border-b border-neutral-300 px-6 py-5 hover:bg-neutral-100"
-            >
-              <IonRippleEffect />
-              <div className="flex items-center">
-                <div className="flex size-9 items-center justify-center rounded-lg bg-primary">
-                  <IonIcon className="size-4 text-white" icon={menu.icon} />
+          <div className="mx-auto w-full max-w-screen-md">
+            {menus.map((menu, i) => (
+              <Link
+                to={menu.to}
+                key={i}
+                className="ion-activatable ripple-parent flex items-center justify-between border-b border-neutral-300 px-6 py-5 hover:bg-neutral-100"
+              >
+                <IonRippleEffect />
+                <div className="flex items-center">
+                  <div className="flex size-9 items-center justify-center rounded-lg bg-primary">
+                    <IonIcon className="size-4 text-white" icon={menu.icon} />
+                  </div>
+                  <div className="ml-6 text-sm font-medium">{menu.title}</div>
                 </div>
-                <div className="ml-6 text-sm font-medium">{menu.title}</div>
-              </div>
 
-              {/* <IonCheckbox className="size-4" /> */}
-            </Link>
-          ))}
+                {/* <IonCheckbox className="size-4" /> */}
+              </Link>
+            ))}
+          </div>
         </div>
       </IonContent>
     </IonPage>

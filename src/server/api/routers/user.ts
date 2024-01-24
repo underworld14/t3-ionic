@@ -8,6 +8,7 @@ import { profileTeacherStatusSchema } from '~/schemas/profile-teacher-status-sch
 
 import { createTRPCRouter, publicProcedure, authorizedProcedure } from '~/server/api/trpc';
 import { buildPaginationMetadata, getPagination } from '~/utils/helpers';
+import { TRPCError } from '@trpc/server';
 
 export const userRouter = createTRPCRouter({
   search: publicProcedure
@@ -147,48 +148,49 @@ export const userRouter = createTRPCRouter({
     };
   }),
 
-  updateUserRegion: authorizedProcedure
+  updateUserKTA: authorizedProcedure
     .input(profileMemberCardSchema)
     .mutation(async ({ ctx, input }) => {
-      const user = await ctx.db.users.findFirstOrThrow({
+      const user = await ctx.db.users.findUniqueOrThrow({
         where: {
           id: ctx.user?.id,
         },
       });
 
-      const profile = await ctx.db?.profiles?.findFirst({
-        where: {
-          user_id: user?.id,
-        },
-      });
-
-      if (profile && profile?.province_id && profile?.city_id && profile?.district_id) {
-        await ctx?.db?.users?.update({
-          where: {
-            id: user?.id,
-          },
-          data: {
-            kta_id: `${profile?.province_id}${profile?.city_id}${profile?.district_id}${user?.id}`,
-          },
+      if (!user.activated_at) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Akun belum diaktivasi',
         });
       }
 
-      await ctx.db?.profiles?.upsert({
+      const profile = await ctx.db?.profiles?.upsert({
         where: {
           user_id: user.id,
         },
         update: {
-          province_id: input?.province_id,
-          city_id: input?.city_id,
-          district_id: input?.district_id,
+          province_id: input.province_id,
+          city_id: input.city_id,
+          district_id: input.district_id,
         },
         create: {
-          province_id: input?.province_id,
-          city_id: input?.city_id,
-          district_id: input?.district_id,
-          user_id: user?.id,
+          province_id: input.province_id,
+          city_id: input.city_id,
+          district_id: input.district_id,
+          user_id: user.id,
         },
       });
+
+      if (profile && profile.province_id && profile.city_id && profile.district_id) {
+        await ctx.db.users.update({
+          where: {
+            id: user?.id,
+          },
+          data: {
+            kta_id: `${profile.province_id}${profile.city_id}${profile.district_id}${user.id}`,
+          },
+        });
+      }
 
       return {
         message: 'User Region berhasil diperbarui',

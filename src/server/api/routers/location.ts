@@ -9,7 +9,7 @@ export const locationRouter = createTRPCRouter({
     .input(
       z
         .object({
-          province_id: z.number(),
+          province_id: z.number().optional(),
         })
         .optional(),
     )
@@ -24,7 +24,7 @@ export const locationRouter = createTRPCRouter({
     .input(
       z
         .object({
-          city_id: z.number(),
+          city_id: z.number().optional(),
         })
         .optional(),
     )
