@@ -8,7 +8,6 @@ import {
   IonSelect,
   IonSelectOption,
   useIonToast,
-  IonSpinner,
 } from '@ionic/react';
 import { card } from 'ionicons/icons';
 import { useEffect } from 'react';
@@ -28,13 +27,7 @@ export default function ProfileMemberCardNumber() {
   const { data: user, refetch: refetchProfile } = api.user.getCurrentProfile.useQuery();
   const provinces = api.location.indexProvince.useQuery();
 
-  const {
-    control,
-    reset,
-    handleSubmit,
-    watch,
-    formState: { isSubmitting },
-  } = useForm<ProfilMemberCardSchema>({
+  const { control, reset, handleSubmit, watch } = useForm<ProfilMemberCardSchema>({
     resolver: profileMemberCardSchemaResolver,
   });
 
@@ -162,16 +155,13 @@ export default function ProfileMemberCardNumber() {
             </IonList>
 
             <Button
+              loading={updateProfileRegion.isLoading}
               onClick={handleSubmit(onSubmit)}
               className="mt-6 w-full"
               color="primary"
               size="md"
             >
-              {isSubmitting ? (
-                <IonSpinner className="h-4 w-4 text-white" name="circular"></IonSpinner>
-              ) : (
-                'Simpan'
-              )}
+              Simpan
             </Button>
           </div>
         </div>

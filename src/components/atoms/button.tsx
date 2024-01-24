@@ -1,5 +1,5 @@
 import { tv } from 'tailwind-variants';
-import { IonRippleEffect } from '@ionic/react';
+import { IonRippleEffect, IonSpinner } from '@ionic/react';
 
 export const button = tv({
   base: 'ion-activatable relative overflow-hidden rounded-lg text-center font-semibold text-white shadow-sm',
@@ -46,7 +46,12 @@ export function Button({
   return (
     <button {...props} className={button({ color, size, shape, className, state })}>
       <IonRippleEffect></IonRippleEffect>
-      {children}
+
+      {loading ? (
+        <IonSpinner className="h-6 w-6 text-white" name="circular"></IonSpinner>
+      ) : (
+        children
+      )}
     </button>
   );
 }

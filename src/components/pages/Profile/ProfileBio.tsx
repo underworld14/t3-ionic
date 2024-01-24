@@ -19,7 +19,12 @@ export default function ProfileBio() {
   const updateProfile = api.user.updateBio.useMutation();
   const [toast] = useIonToast();
 
-  const { register, reset, handleSubmit, formState: { isSubmitting } } = useForm<BiografiSchema>({
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<BiografiSchema>({
     defaultValues: {
       bio: data?.profile?.bio || undefined,
     },
@@ -47,28 +52,30 @@ export default function ProfileBio() {
       </IonHeader>
       <IonContent fullscreen>
         <div className="mt-[72px] px-4">
-          <IonList>
-            <IonItem>
-              <IonTextarea
-                {...register('bio')}
-                autoFocus
-                labelPlacement="stacked"
-                label="Biografi"
-                placeholder="Masukkan deskripsi singkat tentang dirimu"
-                rows={8}
-              ></IonTextarea>
-            </IonItem>
-          </IonList>
+          <div className="mx-auto w-full max-w-screen-md">
+            <IonList>
+              <IonItem>
+                <IonTextarea
+                  {...register('bio')}
+                  autoFocus
+                  labelPlacement="stacked"
+                  label="Biografi"
+                  placeholder="Masukkan deskripsi singkat tentang dirimu"
+                  rows={8}
+                ></IonTextarea>
+              </IonItem>
+            </IonList>
 
-          <div className="pb-6">
-            <Button
-              onClick={handleSubmit(onSubmit)}
-              className="mt-6 w-full"
-              color="primary"
-              size="md"
-            >
-              {isSubmitting ? <IonSpinner className='text-white h-4 w-4' name="circular"></IonSpinner>  : "Simpan"}
-            </Button>
+            <div className="pb-6">
+              <Button
+                onClick={handleSubmit(onSubmit)}
+                className="mt-6 w-full"
+                color="primary"
+                size="md"
+              >
+                Simpan
+              </Button>
+            </div>
           </div>
         </div>
       </IonContent>

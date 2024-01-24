@@ -50,48 +50,49 @@ export default function ProfileUpdatePassword() {
       </IonHeader>
       <IonContent fullscreen>
         <div className="mt-[72px] px-4 py-4">
-          <IonList>
-            <IonItem className="py-1">
-              <IonInput
-                {...register('current_password')}
-                type="password"
-                label="Password Lama"
-                placeholder="Masukkan password lama"
-                labelPlacement="stacked"
-              ></IonInput>
-            </IonItem>
+          <div className="mx-auto w-full max-w-screen-md">
+            <IonList>
+              <IonItem className="py-1">
+                <IonInput
+                  {...register('current_password')}
+                  type="password"
+                  label="Password Lama"
+                  placeholder="Masukkan password lama"
+                  labelPlacement="stacked"
+                ></IonInput>
+              </IonItem>
 
-            <IonItem className="py-1">
-              <IonInput
-                {...register('password')}
-                type="password"
-                label="Password Baru"
-                placeholder="Masukkan password baru"
-                labelPlacement="stacked"
-              ></IonInput>
-            </IonItem>
+              <IonItem className="py-1">
+                <IonInput
+                  {...register('password')}
+                  type="password"
+                  label="Password Baru"
+                  placeholder="Masukkan password baru"
+                  labelPlacement="stacked"
+                ></IonInput>
+              </IonItem>
 
-            <IonItem className="py-1">
-              <IonInput
-                {...register('password_confirmation')}
-                type="password"
-                label="Konfirmasi Password Baru"
-                placeholder="Masukkan konfirmasi password baru"
-                labelPlacement="stacked"
-              ></IonInput>
-            </IonItem>
-          </IonList>
+              <IonItem className="py-1">
+                <IonInput
+                  {...register('password_confirmation')}
+                  type="password"
+                  label="Konfirmasi Password Baru"
+                  placeholder="Masukkan konfirmasi password baru"
+                  labelPlacement="stacked"
+                ></IonInput>
+              </IonItem>
+            </IonList>
 
-          <Button
-            onClick={handleSubmit(onSubmit)}
-            className={cn('mt-6 w-full')}
-            color="primary"
-            size="md"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? <IonSpinner className='text-white h-4 w-4' name="circular"></IonSpinner>  : "Simpan"}
-            
-          </Button>
+            <Button
+              loading={isSubmitting}
+              onClick={handleSubmit(onSubmit)}
+              className={cn('mt-6 w-full')}
+              color="primary"
+              size="md"
+            >
+              Simpan
+            </Button>
+          </div>
         </div>
       </IonContent>
     </IonPage>
