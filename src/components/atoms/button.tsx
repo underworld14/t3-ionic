@@ -1,8 +1,9 @@
 import { tv } from 'tailwind-variants';
+import cn from 'classnames';
 import { IonRippleEffect, IonSpinner } from '@ionic/react';
 
 export const button = tv({
-  base: 'ion-activatable relative overflow-hidden rounded-lg text-center font-semibold text-white shadow-sm',
+  base: 'ion-activatable relative overflow-hidden rounded-lg text-center font-semibold text-white shadow-sm flex items-center justify-center',
   variants: {
     color: {
       primary: 'bg-primary',
@@ -25,8 +26,9 @@ export const button = tv({
 });
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  fullWidth?: boolean;
   color?: 'primary' | 'secondary' | 'grey';
-  size?: 'md' | 'xl' | 'sm';
+  size?: 'md' | 'xl' | 'sm' | 'xs';
   shape?: 'rounded';
   children: React.ReactNode;
   loading?: boolean;
@@ -39,12 +41,16 @@ export function Button({
   shape,
   className,
   loading,
+  fullWidth,
   ...props
 }: ButtonProps) {
   const state = props.disabled ? 'disabled' : undefined;
 
   return (
-    <button {...props} className={button({ color, size, shape, className, state })}>
+    <button
+      {...props}
+      className={cn(button({ color, size, shape, className, state }), fullWidth && 'w-full')}
+    >
       <IonRippleEffect></IonRippleEffect>
 
       {loading ? (
@@ -59,6 +65,5 @@ export function Button({
 Button.defaultProps = {
   color: 'primary',
   size: 'md',
-  shape: 'rounded',
   loading: false,
 };

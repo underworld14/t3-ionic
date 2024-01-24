@@ -11,6 +11,9 @@ dependencies:
   '@capacitor/core':
     specifier: ^5.6.0
     version: 5.6.0
+  '@capacitor/filesystem':
+    specifier: ^5.2.0
+    version: 5.2.0(@capacitor/core@5.6.0)
   '@capacitor/geolocation':
     specifier: ^5.0.6
     version: 5.0.6(@capacitor/core@5.6.0)
@@ -23,6 +26,9 @@ dependencies:
   '@hookform/resolvers':
     specifier: ^3.3.3
     version: 3.3.3(react-hook-form@7.49.2)
+  '@hugocxl/react-to-image':
+    specifier: ^0.0.9
+    version: 0.0.9(html-to-image@1.11.11)(react@18.2.0)
   '@ionic/react':
     specifier: ^7.6.2
     version: 7.6.2(react-dom@18.2.0)(react@18.2.0)
@@ -296,6 +302,14 @@ packages:
       tslib: 2.6.2
     dev: false
 
+  /@capacitor/filesystem@5.2.0(@capacitor/core@5.6.0):
+    resolution: {integrity: sha512-fyv+yWVFfglobPPveIRm4+ryMGI8vW27vjX63HDwB7K5fscSYajid+ie3qfwl2wkbPhlX8KTPes7IPij0lCmQg==}
+    peerDependencies:
+      '@capacitor/core': ^5.1.1
+    dependencies:
+      '@capacitor/core': 5.6.0
+    dev: false
+
   /@capacitor/geolocation@5.0.6(@capacitor/core@5.6.0):
     resolution: {integrity: sha512-3pB3CBa38aDMk7zouGbjOMBytcaqRMBosMcqNrOQjE5LMBAPUI1cEGrUzmkj+scP0SIyYGA95Tkj0BAnzvNWag==}
     peerDependencies:
@@ -343,6 +357,16 @@ packages:
       react-hook-form: ^7.0.0
     dependencies:
       react-hook-form: 7.49.2(react@18.2.0)
+    dev: false
+
+  /@hugocxl/react-to-image@0.0.9(html-to-image@1.11.11)(react@18.2.0):
+    resolution: {integrity: sha512-UzPtjPb5k0V8oPKjmDvYnWtTNCuFh+2ysXF4+dXL0tnEaFDfu2M3iSt32pzKbJsZYoFu5X12JKKd9MKa2OsR6g==}
+    peerDependencies:
+      html-to-image: '>=1'
+      react: '>=16'
+    dependencies:
+      html-to-image: 1.11.11
+      react: 18.2.0
     dev: false
 
   /@ionic/cli-framework-output@2.2.5:
@@ -2639,6 +2663,10 @@ packages:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
     dependencies:
       react-is: 16.13.1
+    dev: false
+
+  /html-to-image@1.11.11:
+    resolution: {integrity: sha512-9gux8QhvjRO/erSnDPv28noDZcPZmYE7e1vFsBLKLlRlKDSqNJYebj6Qz1TGd5lsRV+X+xYyjCKjuZdABinWjA==}
     dev: false
 
   /https-proxy-agent@5.0.1:
