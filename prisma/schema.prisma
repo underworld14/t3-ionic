@@ -101,24 +101,30 @@ model provinces {
 }
 
 model users {
-  id                  Int                   @id @default(autoincrement())
-  kta_id              String?               @unique(map: "UNIQUE")
-  name                String
-  email               String                @unique(map: "users_email_unique")
-  email_verified_at   DateTime?             @db.Timestamp(0)
-  password            String
-  created_at          DateTime              @default(now())
-  updated_at          DateTime              @default(now()) @updatedAt
-  position_id         Int?
-  activated_at        DateTime?
-  profile_img              String?
-  background_img      String?
+  id                Int       @id @default(autoincrement())
+  kta_id            String?   @unique(map: "UNIQUE")
+  name              String
+  email             String    @unique(map: "users_email_unique")
+  email_verified_at DateTime? @db.Timestamp(0)
+  password          String
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @default(now()) @updatedAt
+  position_id       Int?
+  activated_at      DateTime?
+  profile_img       String?
+  background_img    String?
+
   profile             profiles?
   transactions        transactions[]
   membership_payments membership_payments[]
   position            positions?            @relation(fields: [position_id], references: [id], map: "users_position_id_foreign")
   events              events[]
   eventFollowed       followers_on_events[]
+  posts               posts[]
+  following           user_follows[]        @relation("following")
+  followers           user_follows[]        @relation("followers")
+  post_likes          post_likes[]
+  post_comments       post_comments[]
 
   @@index([position_id], map: "users_position_id_foreign")
 }
@@ -235,6 +241,65 @@ model membership_payments {
   transaction transactions? @relation(fields: [transaction_id], references: [id], map: "membership_payments_transaction_id_foreign")
 }
 
+model posts {
+  id         Int        @id @default(autoincrement())
+  body       String     @db.Text
+  author_id  Int 
+  visibility visibility @default(PUBLIC)
+  created_at DateTime   @default(now())
+  updated_at DateTime   @default(now()) @updatedAt
+
+  author        users           @relation(fields: [author_id], references: [id], map: "posts_author_id_foreign")
+  post_medias   post_medias[]
+  post_likes    post_likes[]
+  post_comments post_comments[]
+}
+
+model post_medias {
+  id         Int      @id @default(autoincrement())
+  post_id    Int
+  media_path String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  post posts @relation(fields: [post_id], references: [id], map: "post_medias_post_id_foreign")
+}
+
+model post_likes {
+  id         Int      @id @default(autoincrement())
+  post_id    Int
+  user_id    Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  post posts @relation(fields: [post_id], references: [id], map: "post_likes_post_id_foreign")
+  user users @relation(fields: [user_id], references: [id], map: "post_likes_user_id_foreign")
+}
+
+model post_comments {
+  id         Int      @id @default(autoincrement())
+  post_id    Int
+  user_id    Int
+  body       String   @db.Text
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  post posts @relation(fields: [post_id], references: [id], map: "post_comments_post_id_foreign")
+  user users @relation(fields: [user_id], references: [id], map: "post_comments_user_id_foreign")
+}
+
+model user_follows {
+  follower_id  Int
+  following_id Int
+  created_at   DateTime @default(now())
+  updated_at   DateTime @default(now()) @updatedAt
+
+  follower  users @relation("followers", fields: [follower_id], references: [id], map: "following_follower_id_foreign")
+  following users @relation("following", fields: [following_id], references: [id], map: "following_following_id_foreign")
+
+  @@id([follower_id, following_id])
+}
+
 enum profiles_gender {
   L
   P
@@ -273,4 +338,9 @@ enum status_kepegawaian {
 enum EventType {
   OFFLINE
   ONLINE
+}
+
+enum visibility {
+  PUBLIC
+  PRIVATE
 }
