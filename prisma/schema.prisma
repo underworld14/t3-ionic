@@ -259,6 +259,7 @@ model post_medias {
   id         Int      @id @default(autoincrement())
   post_id    Int
   media_path String
+  type       post_media_type
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 
@@ -343,4 +344,9 @@ enum EventType {
 enum visibility {
   PUBLIC
   PRIVATE
+}
+
+enum post_media_type {
+  IMAGE
+  VIDEO
 }
