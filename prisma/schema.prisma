@@ -156,11 +156,6 @@ model events {
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
-
-  @@index([created_by], map: "event_created_by")
-  @@index([city_id], map: "event_city_id_foreign")
-  @@index([province_id], map: "event_province_id_foreign")
-  @@index([category_id], map: "event_category_id_foreign")
 }
 
 model followers_on_events {
