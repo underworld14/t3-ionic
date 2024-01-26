@@ -110,7 +110,7 @@ export default function Register() {
               </div>
 
               <Button type="submit" size="xl" color="primary">
-                Login
+                Daftar
               </Button>
 
               <span className="text-center text-[#898A8D]">
