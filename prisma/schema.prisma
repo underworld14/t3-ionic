@@ -111,6 +111,8 @@ model users {
   updated_at          DateTime              @default(now()) @updatedAt
   position_id         Int?
   activated_at        DateTime?
+  profile_img              String?
+  background_img      String?
   profile             profiles?
   transactions        transactions[]
   membership_payments membership_payments[]

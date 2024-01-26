@@ -11,6 +11,8 @@ export function MemberDuesCheck() {
   const [memberDues, setMemberDues] = useState(false);
   const [toast] = useIonToast();
 
+  const apiUtils = api.useUtils();
+
   const { data } = api.auth.check.useQuery(undefined, {
     staleTime: 1000 * 60 * 10, // 10 minutes stale
   });
@@ -22,9 +24,7 @@ export function MemberDuesCheck() {
       if (res.snap_token) {
         (window as any).snap?.pay?.(res.snap_token, {
           onSuccess: () => {
-            queryClient.invalidateQueries({
-              queryKey: [['auth', 'check'], { type: 'query' }],
-            });
+            apiUtils.auth.check.invalidate();
           },
         });
       }
@@ -47,9 +47,7 @@ export function MemberDuesCheck() {
         duration: 3000,
       });
 
-      queryClient.invalidateQueries({
-        queryKey: [['auth', 'check'], { type: 'query' }],
-      });
+      apiUtils.auth.check.invalidate();
 
       setOpen(false);
     },
@@ -69,9 +67,7 @@ export function MemberDuesCheck() {
       if (res.snap_token) {
         (window as any).snap?.pay?.(res.snap_token, {
           onSuccess: () => {
-            queryClient.invalidateQueries({
-              queryKey: [['transaction', 'checkMembershipDueDate'], { type: 'query' }],
-            });
+            apiUtils.transaction.checkMembershipDueDate.invalidate();
           },
         });
       }

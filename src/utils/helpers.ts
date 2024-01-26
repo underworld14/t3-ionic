@@ -17,7 +17,10 @@ export function getPagination(page: number = 1, size: number = 10) {
 
 export function payloadValidation(obj: any): any {
   return Object.fromEntries(
-    Object.entries(obj).filter(([_, value]) => value !== undefined && value !== '')
+    Object.entries(obj).filter(([_, value]) => value !== undefined && value !== ''),
   );
 }
- 
+
+export function getUploadPath(filename: string) {
+  return `/uploads/${filename}`;
+}

@@ -8,6 +8,7 @@ import { profileTeacherStatusSchema } from '~/schemas/profile-teacher-status-sch
 
 import { createTRPCRouter, publicProcedure, authorizedProcedure } from '~/server/api/trpc';
 import { buildPaginationMetadata, getPagination } from '~/utils/helpers';
+import { saveBase64AsImageFile } from '~/server/utils/files';
 import { TRPCError } from '@trpc/server';
 
 export const userRouter = createTRPCRouter({
@@ -230,5 +231,45 @@ export const userRouter = createTRPCRouter({
       });
 
       return 'Status guru telah diperbarui';
+    }),
+
+  updateMyPhoto: authorizedProcedure
+    .input(z.object({ profile_img: z.string().optional(), background_img: z.string().optional() }))
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.users.findUniqueOrThrow({
+        where: {
+          id: ctx.user?.id,
+        },
+      });
+
+      if (input.profile_img) {
+        const filename = await saveBase64AsImageFile(user.id, input.profile_img, 'profile');
+
+        await ctx.db.users.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            profile_img: filename,
+          },
+        });
+      }
+
+      if (input.background_img) {
+        const filename = await saveBase64AsImageFile(user.id, input.background_img, 'background');
+
+        await ctx.db.users.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            background_img: filename,
+          },
+        });
+      }
+
+      return {
+        message: 'Foto Profil/Backround berhasil diperbarui',
+      };
     }),
 });

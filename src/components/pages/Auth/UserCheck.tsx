@@ -51,7 +51,12 @@ export default function UserCheck() {
 
           <div className="mt-6 flex h-full flex-col">
             {data.data.map((user, i) => (
-              <UserSearchList key={i} name={user.name} email={user.email} avatar={user.avatar} />
+              <UserSearchList
+                key={i}
+                name={user.name}
+                email={user.email}
+                avatar={user.profile_img}
+              />
             ))}
           </div>
 

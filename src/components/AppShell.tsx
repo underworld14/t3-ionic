@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { KonstaProvider } from 'konsta/react';
 
@@ -20,6 +21,8 @@ import { MemberDuesCheck } from './organisms';
 import routes from './routes';
 
 setupIonicReact({});
+
+defineCustomElements(window);
 
 dayjs.locale('id');
 
