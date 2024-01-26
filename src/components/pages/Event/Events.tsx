@@ -33,59 +33,61 @@ export default function Events() {
       </IonHeader>
       <IonContent>
         <div className="mt-[72px] pb-6">
-          <Tabs onChange={setTab}>
-            <TabItem>Semua Acara</TabItem>
-            <TabItem>Acara Diikuti</TabItem>
-            <TabItem>Acara Saya</TabItem>
-          </Tabs>
-          <div className="px-6 py-6">
-            <TabPanel index={0} activeTab={tab}>
-              <div className="flex w-full items-center gap-5">
-                <IonInput
-                  className="rounded-full bg-gray-100 px-2 text-black"
-                  placeholder="    Cari Nama Acara"
-                />
-                <Button>
-                  <IonIcon className="h-6 w-6 text-black" icon={funnelOutline} />
-                </Button>
-              </div>
+          <div className="mx-auto w-full max-w-screen-md">
+            <Tabs onChange={setTab}>
+              <TabItem>Semua Acara</TabItem>
+              <TabItem>Acara Diikuti</TabItem>
+              <TabItem>Acara Saya</TabItem>
+            </Tabs>
+            <div className="px-6 py-6">
+              <TabPanel index={0} activeTab={tab}>
+                <div className="flex w-full items-center gap-5">
+                  <IonInput
+                    className="rounded-full bg-gray-100 px-2 text-black"
+                    placeholder="    Cari Nama Acara"
+                  />
+                  <Button>
+                    <IonIcon className="h-6 w-6 text-black" icon={funnelOutline} />
+                  </Button>
+                </div>
 
-              <EventCard />
-              <EventCard />
-              <EventCard />
-            </TabPanel>
+                <EventCard />
+                <EventCard />
+                <EventCard />
+              </TabPanel>
 
-            <TabPanel index={1} activeTab={tab}>
-            <div className="flex w-full items-center gap-5">
-                <IonInput
-                  className="rounded-full bg-gray-100 px-2 text-black"
-                  placeholder="    Cari Nama Acara"
-                />
-                <Button>
-                  <IonIcon className="h-6 w-6 text-black" icon={funnelOutline} />
-                </Button>
-              </div>
+              <TabPanel index={1} activeTab={tab}>
+                <div className="flex w-full items-center gap-5">
+                  <IonInput
+                    className="rounded-full bg-gray-100 px-2 text-black"
+                    placeholder="    Cari Nama Acara"
+                  />
+                  <Button>
+                    <IonIcon className="h-6 w-6 text-black" icon={funnelOutline} />
+                  </Button>
+                </div>
 
-              <EventCard />
-              <EventCard />
-              <EventCard />
-            </TabPanel>
+                <EventCard />
+                <EventCard />
+                <EventCard />
+              </TabPanel>
 
-            <TabPanel index={2} activeTab={tab}>
-            <div className="flex w-full items-center gap-5">
-                <IonInput
-                  className="rounded-full bg-gray-100 px-2 text-black"
-                  placeholder="    Cari Nama Acara"
-                />
-                <Button>
-                  <IonIcon className="h-6 w-6 text-black" icon={funnelOutline} />
-                </Button>
-              </div>
+              <TabPanel index={2} activeTab={tab}>
+                <div className="flex w-full items-center gap-5">
+                  <IonInput
+                    className="rounded-full bg-gray-100 px-2 text-black"
+                    placeholder="    Cari Nama Acara"
+                  />
+                  <Button>
+                    <IonIcon className="h-6 w-6 text-black" icon={funnelOutline} />
+                  </Button>
+                </div>
 
-              <EventCard />
-              <EventCard />
-              <EventCard />
-            </TabPanel>
+                <EventCard />
+                <EventCard />
+                <EventCard />
+              </TabPanel>
+            </div>
           </div>
         </div>
       </IonContent>

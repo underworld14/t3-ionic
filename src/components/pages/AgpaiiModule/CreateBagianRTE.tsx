@@ -20,9 +20,12 @@ export default function CreateBagianRTE() {
       </IonHeader>
       <IonContent>
         <div className='mt-[72px]'>
+          <div className='mx-auto w-full max-w-screen-md'>
+
             <div className='p-3'>
             <ReactQuill className='h-[85vh]' theme="snow" />
             </div>
+          </div>
         </div>
       </IonContent>
     </IonPage>

@@ -15,7 +15,9 @@ export default function ModuleSearch() {
 
       <IonContent>
         <div className="mt-[72px]">
-          <ModuleItem />
+          <div className="mx-auto w-full max-w-screen-md">
+            <ModuleItem />
+          </div>
         </div>
       </IonContent>
     </IonPage>

@@ -10,26 +10,30 @@ export default function MyDraft() {
       </IonHeader>
       <IonContent>
         <div className="mt-[75px]">
-          <IonSearchbar placeholder="Cari Modul"></IonSearchbar>
+          <div className="mx-auto w-full max-w-screen-md">
+            <IonSearchbar placeholder="Cari Modul"></IonSearchbar>
+          </div>
         </div>
 
-        <div className="flex items-center gap-4 px-4">
-          <img
-            className="rounded-md shadow-md"
-            width={100}
-            height={150}
-            alt="cover"
-            src={`https://picsum.photos/seed/${Math.random() * 10}/100/150`}
-          />
-          <div>
-            <div className="flex gap-3">
-              <h2 className="text-[15px] font-semibold">Bacaan Shalat</h2>
-              <IonIcon className='text-lg' icon={pencil} />
+        <div className="mx-auto w-full max-w-screen-md">
+          <div className="flex items-center gap-4 px-4">
+            <img
+              className="rounded-md shadow-md"
+              width={100}
+              height={150}
+              alt="cover"
+              src={`https://picsum.photos/seed/${Math.random() * 10}/100/150`}
+            />
+            <div>
+              <div className="flex gap-3">
+                <h2 className="text-[15px] font-semibold">Bacaan Shalat</h2>
+                <IonIcon className="text-lg" icon={pencil} />
+              </div>
+              <p className="text-tertiary">
+                Dalam agama islam, kedudukan ibadah shalat ibarat tiang utama yang menjadi penopang
+                suatu bangunan. jika tiang....
+              </p>
             </div>
-            <p className='text-tertiary'>
-              Dalam agama islam, kedudukan ibadah shalat ibarat tiang utama yang menjadi penopang
-              suatu bangunan. jika tiang....
-            </p>
           </div>
         </div>
       </IonContent>

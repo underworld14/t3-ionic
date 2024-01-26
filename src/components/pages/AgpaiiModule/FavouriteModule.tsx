@@ -10,12 +10,14 @@ export default function FavouriteModule() {
       </IonHeader>
       <IonContent>
         <div className="mt-[75px]">
-          <div>
-            <IonSearchbar placeholder="Cari Modul"></IonSearchbar>
-          </div>
-          <div>
-            <ModuleItem />
-            <ModuleItem />
+          <div className="mx-auto w-full max-w-screen-md">
+            <div>
+              <IonSearchbar placeholder="Cari Modul"></IonSearchbar>
+            </div>
+            <div>
+              <ModuleItem />
+              <ModuleItem />
+            </div>
           </div>
         </div>
       </IonContent>

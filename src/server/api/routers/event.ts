@@ -13,10 +13,19 @@ export const eventRouter = createTRPCRouter({
             }
         })
 
+        console.log('image trpc',input?.image?.["0"])
+
         await ctx.db?.events.create({
             data: {
                 created_by: user?.id,
                 title: input?.title,
+                description: input?.description,
+                category_id: input?.category_id,
+                place: input?.place,
+                province_id: input?.province_id,
+                city_id: input?.city_id,
+                start_time: input?.start_time,
+                end_time: input?.end_time
                 
             }
         })

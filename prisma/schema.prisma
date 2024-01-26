@@ -145,7 +145,7 @@ model events {
   eventType      EventType?
   description    String?
   category_id    Int?
-  created_by     Int                   @unique
+  created_by     Int
   image_path     String?
   creater        users?                @relation(fields: [created_by], references: [id], map: "event_created_by")
   cities         cities?               @relation(fields: [city_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "event_city_id_foreign")

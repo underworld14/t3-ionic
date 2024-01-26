@@ -20,35 +20,37 @@ export default function CreateModuleImage() {
       </IonHeader>
       <IonContent>
         <div className="mt-[72px]">
-          <Tabs activeTab={tab} onChange={setTab}>
-            <TabItem>Media Saya</TabItem>
-            <TabItem>Template</TabItem>
-          </Tabs>
+          <div className="mx-auto w-full max-w-screen-md">
+            <Tabs activeTab={tab} onChange={setTab}>
+              <TabItem>Media Saya</TabItem>
+              <TabItem>Template</TabItem>
+            </Tabs>
 
-          <TabPanel activeTab={tab} index={0}>
-            <form className="p-3">
-              <input type="file" />
-            </form>
-          </TabPanel>
+            <TabPanel activeTab={tab} index={0}>
+              <form className="p-3">
+                <input type="file" />
+              </form>
+            </TabPanel>
 
-          <TabPanel activeTab={tab} index={1}>
-            <div className="p-3">
-              <h1>Sampul Modul</h1>
+            <TabPanel activeTab={tab} index={1}>
+              <div className="p-3">
+                <h1>Sampul Modul</h1>
 
-              <div className="grid grid-cols-3 gap-2 px-2 py-5">
-                {Array.from({ length: 12 }).map((_, i) => (
-                  <img
-                  key={i}
-                    className="rounded-md"
-                    src={`https://picsum.photos/seed/${Math.random() * 10}/120/165`}
-                    width={120}
-                    height={165}
-                    alt="module"
-                  />
-                ))}
+                <div className="grid grid-cols-3 gap-2 px-2 py-5">
+                  {Array.from({ length: 12 }).map((_, i) => (
+                    <img
+                      key={i}
+                      className="rounded-md"
+                      src={`https://picsum.photos/seed/${Math.random() * 10}/120/165`}
+                      width={120}
+                      height={165}
+                      alt="module"
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-          </TabPanel>
+            </TabPanel>
+          </div>
         </div>
       </IonContent>
     </IonPage>

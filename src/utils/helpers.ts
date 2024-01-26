@@ -24,3 +24,10 @@ export function payloadValidation(obj: any): any {
 export function getUploadPath(filename: string) {
   return `/uploads/${filename}`;
 }
+
+
+export function converImageToBase64(file: File) {
+  const reader = new FileReader()
+
+  return reader.readAsDataURL(file)
+}
